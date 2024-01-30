@@ -1,0 +1,17 @@
+# core
+typer
+colorama
+rich
+shellingham
+pydantic
+pydantic_settings
+aiofiles
+
+# development
+ruff
+pytest
+pytest-asyncio
+responses
+
+# build
+pyinstaller
