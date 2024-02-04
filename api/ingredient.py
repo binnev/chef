@@ -9,44 +9,57 @@ class Ingredient(BaseModel):
 
     @classmethod
     def from_str(cls, s: str) -> "Ingredient":
-        """
-        :param s: examples:
-                    name only:                    "apple"
-                    amount and name:              "1, apple"
-                    amount, unit and name:        "1, kg, apples"
-                    amount, unit, name, and prep: "1, kg, apples; chopped"
-        :return:
-        """
-        amount = unit = name = prep = ""
+        return Ingredient(**parse_ingredient_str(s))
 
-        match list(map(str.strip, s.split(";"))):
-            case [""]:
-                raise ParseError("empty input")
-            case [s]:
-                pass
-            case [s, prep]:
-                pass
-            case _:
-                raise ParseError("Too many semicolons")
 
-        match list(map(str.strip, s.split(","))):
-            case [""]:
-                raise ParseError("Got prep but no ingredients")
-            case [amount, name]:  # e.g. 1, apple
-                pass
-            case [amount, unit, name]:  # e,g. 1, kg, apples
-                pass
-            case [name]:
-                pass
-            case _:
-                raise ParseError("Too many commas")
+def parse_ingredient_str(s: str) -> dict:
+    """
+    :param s: examples:
+                name only:                    "apple"
+                amount and name:              "1, apple"
+                amount, unit and name:        "1, kg, apples"
+                amount, unit, name, and prep: "1, kg, apples; chopped"
+    :return:
+    :raises: IngredientParseError
+    """
+    output = {}
 
-        return Ingredient(
-            name=name,
-            amount=_parse_number(amount),
-            unit=unit,
-            prep=prep,
-        )
+    match list(map(str.strip, s.split(";"))):
+        case [""]:
+            raise IngredientParseError("empty input")
+        case [s]:
+            pass
+        case [s, ""]:  # trailing ";" and empty prep
+            pass
+        case [s, prep]:  # non-empty prep
+            output["prep"] = prep
+        case _:
+            raise IngredientParseError("Too many semicolons")
+
+    match list(map(str.strip, s.split(","))):
+        case [""]:
+            raise IngredientParseError("Got prep but no ingredients")
+        case [amount, name]:  # e.g. 1, apple
+            if not name:
+                raise IngredientParseError("empty value: name")
+            if not amount:
+                raise IngredientParseError("empty value: amount")
+            output["name"] = name
+            output["amount"] = _parse_number(amount)
+        case [amount, unit, name]:  # e,g. 1, kg, apples
+            output["name"] = name
+            output["amount"] = _parse_number(amount)
+            output["unit"] = unit
+        case [name]:
+            output["name"] = name
+        case _:
+            raise IngredientParseError("Too many commas")
+
+    return output
+
+
+class IngredientParseError(Exception):
+    pass
 
 
 def _parse_number(number: str) -> int | float:
@@ -56,7 +69,3 @@ def _parse_number(number: str) -> int | float:
         return float(number)
     else:
         return int(number)
-
-
-class ParseError(Exception):
-    pass
