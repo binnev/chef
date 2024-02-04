@@ -1,3 +1,7 @@
+import asyncio
+from pathlib import Path
+
+import aiofiles
 import yaml
 from pydantic import BaseModel
 
@@ -57,18 +61,20 @@ class Recipe(BaseModel):
         ]
 
     @classmethod
-    def load_all(cls) -> list["Recipe"]:
+    async def load_all(cls) -> list["Recipe"]:
         """
         Load all the recipes from yaml
-        :return:
         """
-        # todo: make this async
         filenames = settings.recipes_dir.glob("*.yaml")
-        recipe_dicts = []
-        for filename in filenames:
-            with open(filename) as file:
-                recipe_dict = yaml.safe_load(file)
-                recipe_dict = preprocess_yaml(recipe_dict)
-                recipe_dicts.append(recipe_dict)
-        recipes = [cls(**recipe_dict) for recipe_dict in recipe_dicts]
-        return recipes
+        return list(await asyncio.gather(*(cls.load(f) for f in filenames)))
+
+    @classmethod
+    async def load(cls, filename: Path) -> "Recipe":
+        """
+        Load from yaml
+        """
+        async with aiofiles.open(filename) as file:
+            recipe_str = await file.read()
+            recipe_dict = yaml.safe_load(recipe_str)
+            recipe_dict = preprocess_yaml(recipe_dict)
+            return Recipe(**recipe_dict)

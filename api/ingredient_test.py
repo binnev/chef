@@ -56,6 +56,11 @@ from .ingredient import (
             id="padded spaces should be trimmed",
         ),
         pytest.param(
+            "0.25, cup, cabbage;  shredded",
+            dict(name="cabbage", amount=0.25, unit="cup", prep="shredded"),
+            id="this one gave me trouble in the wild",
+        ),
+        pytest.param(
             "",
             IngredientParseError("empty input"),
             id="empty input -> error",
@@ -110,6 +115,7 @@ def test_parse_ingredient_str(s: str, expected: dict | IngredientParseError):
         ("0", 0),
         ("1", 1),
         ("1.2", 1.2),
+        ("0.25", 0.25),
         ("1,2", IngredientParseError("invalid number: '1,2'")),
         ("aaa", IngredientParseError("invalid number: 'aaa'")),
     ],
