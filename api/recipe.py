@@ -5,8 +5,7 @@ import aiofiles
 import yaml
 from pydantic import BaseModel
 
-from .ingredient import Ingredient
-from .loading import preprocess_yaml
+from .ingredient import Ingredient, parse_ingredient_str
 from .settings import settings
 
 
@@ -78,3 +77,18 @@ class Recipe(BaseModel):
             recipe_dict = yaml.safe_load(recipe_str)
             recipe_dict = preprocess_yaml(recipe_dict)
             return Recipe(**recipe_dict)
+
+
+def preprocess_yaml(yaml_dict: dict) -> dict:
+    """
+    Convert all the ingredient strings into ingredient dicts, so that we can
+    pass the result to pydantic models.
+
+    :param yaml_dict: YAML recipe loaded into dict form
+    :raises: ParseIngredientError
+    """
+    if "ingredients" in yaml_dict:
+        yaml_dict["ingredients"] = list(
+            map(parse_ingredient_str, yaml_dict["ingredients"])
+        )
+    return yaml_dict

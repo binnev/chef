@@ -1,6 +1,7 @@
-title: porridge
-cooking time: 24 hours
-prep time: 2 minutes
+name: porridge
+author: me
+cook_minutes: 10
+prep_minutes: 2
 
 ingredients:
 - 40, gram, oats

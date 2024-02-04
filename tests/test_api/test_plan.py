@@ -1,6 +1,6 @@
-from .ingredient import Ingredient
-from .plan import merge_recipes
-from .recipe import Recipe
+from api.ingredient import Ingredient
+from api.plan import merge_recipes
+from api.recipe import Recipe
 
 import pytest
 
