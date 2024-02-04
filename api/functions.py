@@ -1,7 +1,7 @@
 import json
 
 from . import utils
-from .models import Plan
+from .plan import Plan
 from .settings import settings
 
 

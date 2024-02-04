@@ -14,4 +14,17 @@ class Plan(BaseModel):
         """
         Merge the ingredients from self.recipes into one list of ingredients.
         """
-        raise NotImplementedError
+        return merge_recipes(self.recipes)
+
+
+def merge_recipes(recipes: list[Recipe]) -> list[Ingredient]:
+    """
+    This is the magic.
+    :param recipes:
+    :return:
+    """
+    shopping_list = []
+    for recipe in recipes:
+        shopping_list.extend(recipe.ingredients)
+
+    return shopping_list
