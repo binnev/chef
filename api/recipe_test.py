@@ -1,7 +1,7 @@
 import pytest
 
 from api.ingredient import Ingredient
-from api.recipe import Recipe
+from api.recipe import Recipe, search_recipe
 
 
 @pytest.mark.parametrize(
@@ -67,3 +67,43 @@ from api.recipe import Recipe
 )
 def test_init_happy(recipe_dict: dict, expected: Recipe):
     assert Recipe(**recipe_dict) == expected
+
+
+RECIPES = [
+    Recipe(name="foo", author="bar", ingredients=[]),
+    Recipe(name="baz", author="qux", ingredients=[]),
+]
+
+
+@pytest.mark.parametrize(
+    "query, recipes, expected",
+    [
+        pytest.param("", RECIPES, [], id="empty query"),
+        pytest.param("foo", [], [], id="empty recipes"),
+        pytest.param("fart", RECIPES, [], id="query not found"),
+        pytest.param(
+            "foo",
+            RECIPES,
+            [Recipe(name="foo", author="bar", ingredients=[])],
+            id="single term found in single recipe",
+        ),
+        pytest.param(
+            "ba",
+            RECIPES,
+            RECIPES,
+            id="single term was found in multiple recipes",
+        ),
+        pytest.param(
+            "foo qux",
+            RECIPES,
+            RECIPES,
+            id="multiple query terms were found in multiple recipes",
+        ),
+    ],
+)
+def test_search_recipe(
+    query: str,
+    recipes: list[Recipe],
+    expected: list[Recipe],
+):
+    assert search_recipe(query, recipes) == expected

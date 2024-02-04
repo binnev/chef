@@ -24,3 +24,31 @@ class Recipe(BaseModel):
 
     def __str__(self):
         return f"{self.name} by {self.author}"
+
+
+def search_recipe(query: str, recipes: list[Recipe]) -> list[Recipe]:
+    """
+    :param query: Could be anything -- ingredient, title fragment, author
+    :param recipes: the recipes to search
+    :return: list of recipes that match the given query term
+    """
+    if not query or not recipes:
+        return []
+
+    # todo: improve this function. Should be able to search specifically for
+    #  author, or ingredient. Should be able to pass via flags e.g.
+    #       -a --author Robin Neville
+    #       -i --ingredient lentils
+    #       -e --equipment air fryer
+    #       -x --exclude (flips the above logic as if applying `not` to the
+    #                     whole query)
+
+    return [
+        recipe
+        for recipe in recipes
+        if any(
+            needle.lower() in haystack.lower()
+            for needle in query.split()
+            for haystack in [recipe.name, recipe.author]
+        )
+    ]
