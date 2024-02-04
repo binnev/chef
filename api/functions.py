@@ -1,23 +1,23 @@
 import json
 
 from . import utils
-from .models import ShoppingList
+from .models import Plan
 from .settings import settings
 
 
-def new_shopping_list() -> ShoppingList:
-    shopping_list = ShoppingList()
+def new_plan() -> Plan:
+    shopping_list = Plan()
     utils.touch(settings.shopping_list_path)
     with open(settings.shopping_list_path, "w") as file:
         file.write(shopping_list.model_dump_json())
     return shopping_list
 
 
-def current_shopping_list() -> ShoppingList:
+def current_plan() -> Plan:
     with open(settings.shopping_list_path) as file:
         try:
             list_data = json.load(file)
         except json.JSONDecodeError:
-            return new_shopping_list()
+            return new_plan()
 
-    return ShoppingList(**list_data)
+    return Plan(**list_data)

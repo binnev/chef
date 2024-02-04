@@ -1,6 +1,6 @@
-from .functions import new_shopping_list, current_shopping_list
+from .functions import new_plan, current_plan
 
 __all__ = (
-    new_shopping_list.__name__,
-    current_shopping_list.__name__,
+    new_plan.__name__,
+    current_plan.__name__,
 )

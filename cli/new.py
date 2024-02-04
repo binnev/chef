@@ -14,7 +14,7 @@ def new_plan():
     """
     new_plan
     """
-    api.new_shopping_list()
+    api.new_plan()
     typer.secho("created new plan")
 
 

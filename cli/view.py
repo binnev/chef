@@ -14,7 +14,7 @@ def view_plan():
     """
     view_plan
     """
-    shopping_list = api.current_shopping_list()
+    shopping_list = api.current_plan()
     typer.secho(f"Current plan:\n{shopping_list.recipes}")
 
 
@@ -23,5 +23,5 @@ def view_list():
     """
     view_list
     """
-    shopping_list = api.current_shopping_list()
-    typer.secho(f"Current plan:\n{shopping_list.squeeze()}")
+    plan = api.current_plan()
+    typer.secho(f"Current plan:\n{plan.shopping_list()}")
