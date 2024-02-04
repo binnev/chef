@@ -1,7 +1,7 @@
 import pytest
 
 from api.ingredient import Ingredient
-from api.recipe import Recipe, search_recipe
+from api.recipe import Recipe
 
 
 @pytest.mark.parametrize(
@@ -29,7 +29,7 @@ from api.recipe import Recipe, search_recipe
                 "servings": 666,
                 "source": "https://source.com",
                 "image": "https://image.com",
-                "notes": ["I am a potato"],
+                "notes": "I am a potato. A potato wrote this recipe.",
                 "ingredients": [
                     {
                         "name": "potatoes",
@@ -49,7 +49,7 @@ from api.recipe import Recipe, search_recipe
                 servings=666,
                 source="https://source.com",
                 image="https://image.com",
-                notes=["I am a potato"],
+                notes="I am a potato. A potato wrote this recipe.",
                 ingredients=[
                     Ingredient(
                         name="potatoes",
@@ -101,9 +101,9 @@ RECIPES = [
         ),
     ],
 )
-def test_search_recipe(
+def test_search(
     query: str,
     recipes: list[Recipe],
     expected: list[Recipe],
 ):
-    assert search_recipe(query, recipes) == expected
+    assert Recipe.search(query, recipes) == expected

@@ -33,7 +33,6 @@ def test_preprocess_yaml(
     if isinstance(expected, IngredientParseError):
         with pytest.raises(expected.__class__) as e:
             preprocess_yaml(recipe_dict)
-        assert isinstance(e.value, IngredientParseError)
         assert str(e.value) == str(expected)
 
     else:

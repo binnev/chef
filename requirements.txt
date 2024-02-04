@@ -6,6 +6,7 @@ shellingham
 pydantic
 pydantic_settings
 aiofiles
+inquirer
 
 # development
 ruff

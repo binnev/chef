@@ -1,7 +1,9 @@
 import pytest
-from api.ingredient import (
+from .ingredient import (
     IngredientParseError,
     parse_ingredient_str,
+    Ingredient,
+    _parse_number,
 )
 
 
@@ -27,6 +29,11 @@ from api.ingredient import (
             "2, potatoes",
             dict(name="potatoes", amount=2),
             id="amount, ingredient",
+        ),
+        pytest.param(
+            "2.5, potatoes",
+            dict(name="potatoes", amount=2.5),
+            id="amount (float), ingredient",
         ),
         pytest.param(
             "2, potatoes; peeled",
@@ -90,8 +97,50 @@ def test_parse_ingredient_str(s: str, expected: dict | IngredientParseError):
         with pytest.raises(expected.__class__) as e:
             parse_ingredient_str(s)
         # for some reason `e.value == expected` fails even when they're the same
-        assert isinstance(e.value, IngredientParseError)
         assert str(e.value) == str(expected)
 
     else:
         assert parse_ingredient_str(s) == expected
+
+
+@pytest.mark.parametrize(
+    "s, expected",
+    [
+        ("", 0),
+        ("0", 0),
+        ("1", 1),
+        ("1.2", 1.2),
+        ("1,2", IngredientParseError("invalid number: '1,2'")),
+        ("aaa", IngredientParseError("invalid number: 'aaa'")),
+    ],
+)
+def test__parse_number(s: str, expected: int | float | IngredientParseError):
+    if isinstance(expected, IngredientParseError):
+        with pytest.raises(expected.__class__) as e:
+            _parse_number(s)
+        assert str(e.value) == str(expected)
+
+    else:
+        assert _parse_number(s) == expected
+
+
+@pytest.mark.parametrize(
+    "ingredient, expected",
+    [
+        (Ingredient(name="apples"), "apples"),
+        (Ingredient(name="apples", prep="chopped"), "apples; chopped"),
+        (Ingredient(name="apples", amount=2), "2 apples"),
+        (
+            Ingredient(name="apples", amount=2, prep="chopped"),
+            "2 apples; chopped",
+        ),
+        (Ingredient(name="apples", amount=2.5), "2.5 apples"),
+        (Ingredient(name="apples", amount=2, unit="kg"), "2 kg apples"),
+        (
+            Ingredient(name="apples", amount=2, unit="kg", prep="chopped"),
+            "2 kg apples; chopped",
+        ),
+    ],
+)
+def test_str(ingredient: Ingredient, expected: str):
+    assert str(ingredient) == expected

@@ -13,6 +13,9 @@ class Plan(BaseModel):
     created: datetime = Field(default_factory=lambda: datetime.utcnow())
     recipes: list[Recipe] = Field(default_factory=list)
 
+    def __str__(self):
+        return f"Plan (created at {self.created})"
+
     def shopping_list(self) -> list[Ingredient]:
         """
         Merge the ingredients from self.recipes into one list of ingredients.
@@ -29,11 +32,9 @@ class Plan(BaseModel):
         :return: new plan
         """
         plan = cls()
-        new_plan_filename = (
-            settings.plans_dir / f"{plan.created.isoformat()}.json"
-        )
-        utils.touch(new_plan_filename)
-        with open(new_plan_filename, "w") as file:
+        filename = plan.filename
+        utils.touch(filename)
+        with open(filename, "w") as file:
             file.write(plan.model_dump_json())
         return plan
 
@@ -47,6 +48,13 @@ class Plan(BaseModel):
             except json.JSONDecodeError:
                 return cls.new_plan()
 
+    def save(self):
+        with open(self.filename, "w") as file:
+            file.write(self.model_dump_json())
+
+    @property
+    def filename(self):
+        return settings.plans_dir / f"{self.created.isoformat()}.json"
 
 def merge_recipes(recipes: list[Recipe]) -> list[Ingredient]:
     """

@@ -3,7 +3,7 @@ from pydantic import BaseModel
 
 class Ingredient(BaseModel):
     name: str
-    amount: int = 0
+    amount: int | float = 0
     unit: str = ""
     prep: str = ""
 
@@ -11,6 +11,21 @@ class Ingredient(BaseModel):
     def from_str(cls, s: str) -> "Ingredient":
         return Ingredient(**parse_ingredient_str(s))
 
+    def __str__(self):
+        match [self.name, self.amount, self.unit]:
+            case [name, 0, ""]:
+                result = f"{name}"
+            case [name, amount, ""]:
+                result = f"{amount} {name}"
+            case [name, amount, unit]:
+                result = f"{amount} {unit} {name}"
+            case _:
+                raise RuntimeError("unreachable")
+
+        if self.prep:
+            result += f"; {self.prep}"
+
+        return result
 
 def parse_ingredient_str(s: str) -> dict:
     """
@@ -63,9 +78,18 @@ class IngredientParseError(Exception):
 
 
 def _parse_number(number: str) -> int | float:
-    if not number.strip().isdecimal():
+    """
+    :raises: IngredientParseError if invalid number
+    """
+    if not number.strip():
         return 0
-    if "." in number:
-        return float(number)
+
+    try:
+        result = float(number)
+    except ValueError:
+        raise IngredientParseError(f"invalid number: {number!r}")
     else:
-        return int(number)
+        if result % 1 == 0:
+            return int(result)
+        else:
+            return result
