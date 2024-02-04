@@ -14,8 +14,11 @@ def view_plan():
     """
     view_plan
     """
-    shopping_list = api.current_plan()
-    typer.secho(f"Current plan:\n{shopping_list.recipes}")
+    plan = api.Plan.current()
+    typer.secho(f"Current plan:")
+    typer.secho(f"\tcreated: {plan.created.isoformat()}")
+    typer.secho(f"\trecipes:")
+    typer.secho(f"\t\t{plan.recipes}")
 
 
 @app.command(name="list")
@@ -23,5 +26,5 @@ def view_list():
     """
     view_list
     """
-    plan = api.current_plan()
+    plan = api.Plan.current()
     typer.secho(f"Current plan:\n{plan.shopping_list()}")

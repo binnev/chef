@@ -14,8 +14,8 @@ def new_plan():
     """
     new_plan
     """
-    api.new_plan()
-    typer.secho("created new plan")
+    api.Plan.new()
+    typer.secho("created new plan\n")
 
 
 @app.command(name="recipe")

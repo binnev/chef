@@ -8,12 +8,12 @@ from . import utils
 BASE = Path.home() / ".sous-chef"
 SETTINGS_FILE = BASE / "settings.json"
 RECIPES_DIR = BASE / "recipes"
-SHOPPING_LIST_FILE = BASE / "shopping-list.json"
+PLANS_DIR = BASE / "plans"
 
 
 class Settings(BaseSettings):
     recipes_dir: Path = Field(RECIPES_DIR)
-    shopping_list_path: Path = Field(SHOPPING_LIST_FILE)
+    plans_dir: Path = Field(PLANS_DIR)
 
     def save(self):
         utils.touch(SETTINGS_FILE)
