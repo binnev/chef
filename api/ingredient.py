@@ -27,6 +27,7 @@ class Ingredient(BaseModel):
 
         return result
 
+
 def parse_ingredient_str(s: str) -> dict:
     """
     :param s: examples:

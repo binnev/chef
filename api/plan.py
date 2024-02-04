@@ -56,6 +56,7 @@ class Plan(BaseModel):
     def filename(self):
         return settings.plans_dir / f"{self.created.isoformat()}.json"
 
+
 def merge_recipes(recipes: list[Recipe]) -> list[Ingredient]:
     """
     This is the magic.
