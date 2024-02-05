@@ -1,20 +1,20 @@
-from api.ingredient import Ingredient
-from api.shopping_list import merge_recipes
-from api.recipe import Recipe
-
 import pytest
 
+from api.ingredient import Ingredient
+from api.recipe import Recipe
+from api.shopping_list import merge_recipes, Amounts
 
-def _recipe(ingredient_strings: list[str]) -> Recipe:
+
+def _recipe(
+    ingredient_strings: list[str],
+    author: str = "whatever",
+    name: str = "whatever",
+) -> Recipe:
     return Recipe(
-        name="whatever",
-        author="whatever",
-        ingredients=[_ing(s) for s in ingredient_strings],
+        name=name,
+        author=author,
+        ingredients=[Ingredient.from_str(s) for s in ingredient_strings],
     )
-
-
-def _ing(s: str) -> Ingredient:
-    return Ingredient.from_str(s)
 
 
 @pytest.mark.parametrize(
@@ -22,28 +22,57 @@ def _ing(s: str) -> Ingredient:
     [
         pytest.param(
             [],
-            [],
+            {},
             id="No recipes -> the shopping list should be empty",
         ),
         pytest.param(
             [_recipe(["poopoo", "peepee"])],
-            [_ing("poopoo"), _ing("peepee")],
-            id=(
-                "Only 1 recipe -> the ingredients list should be the same as "
-                "that recipe.ingredients"
-            ),
+            {
+                "poopoo": Amounts(enough_for=["whatever"]),
+                "peepee": Amounts(enough_for=["whatever"]),
+            },
         ),
-        # pytest.param(
-        #     [
-        #         _recipe(["poopoo", "peepee"]),
-        #         _recipe(["poopoo", "peepee"]),
-        #     ],
-        #     [_ing("poopoo"), _ing("peepee")],
-        #     id=(
-        #         "2 recipes with 'name only' ingredients -> the ingredients "
-        #         "should be merged"
-        #     ),
-        # ),
+        pytest.param(
+            [_recipe(["1, kg, poopoo", "peepee"])],
+            {
+                "poopoo": Amounts(units={"kg": 1}),
+                "peepee": Amounts(enough_for=["whatever"]),
+            },
+        ),
+        pytest.param(
+            [
+                _recipe(["1, kg, poopoo", "peepee"]),
+                _recipe(["69, kg, poopoo", "10, weewee"]),
+            ],
+            {
+                "poopoo": Amounts(units={"kg": 70}),
+                "peepee": Amounts(enough_for=["whatever"]),
+                "weewee": Amounts(unitless=10),
+            },
+        ),
+        pytest.param(
+            [
+                _recipe(["poopoo", "peepee"]),
+                _recipe(["poopoo"], name="second one"),
+            ],
+            {
+                "poopoo": Amounts(enough_for=["whatever", "second one"]),
+                "peepee": Amounts(enough_for=["whatever"]),
+            },
+        ),
+        pytest.param(
+            [
+                _recipe(["poopoo", "2, poopoo", "3, kg, poopoo"], name="one"),
+                _recipe(["poopoo", "5, poopoo", "7, kg, poopoo"], name="two"),
+            ],
+            {
+                "poopoo": Amounts(
+                    enough_for=["one", "two"],
+                    unitless=7,
+                    units={"kg": 10},
+                ),
+            },
+        ),
     ],
 )
 def test_merge_recipes(recipes: list[Recipe], expected: list[Ingredient]):
