@@ -50,7 +50,7 @@ def parse_ingredient_str(s: str) -> dict:
         case [s, prep]:  # non-empty prep
             output["prep"] = prep
         case _:
-            raise IngredientParseError("Too many semicolons")
+            raise IngredientParseError(f"Too many semicolons: {s}")
 
     match list(map(str.strip, s.split(","))):
         case [""]:
@@ -69,7 +69,7 @@ def parse_ingredient_str(s: str) -> dict:
         case [name]:
             output["name"] = name
         case _:
-            raise IngredientParseError("Too many commas")
+            raise IngredientParseError(f"Too many commas: {s}")
 
     return output
 

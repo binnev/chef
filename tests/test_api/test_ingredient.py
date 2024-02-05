@@ -102,7 +102,7 @@ def test_parse_ingredient_str(s: str, expected: dict | IngredientParseError):
         with pytest.raises(expected.__class__) as e:
             parse_ingredient_str(s)
         # for some reason `e.value == expected` fails even when they're the same
-        assert str(e.value) == str(expected)
+        assert str(e.value).startswith(str(expected))
 
     else:
         assert parse_ingredient_str(s) == expected
