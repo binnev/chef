@@ -12,7 +12,7 @@ from .settings import settings
 class Recipe(BaseModel):
     # metadata
     name: str
-    author: str
+    author: str = ""
     prep_minutes: int = 0
     cook_minutes: int = 0
     servings: int = 0
