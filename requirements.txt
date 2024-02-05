@@ -12,6 +12,7 @@ inquirer
 ruff
 pytest
 pytest-asyncio
+pytest-cov
 responses
 
 # build
