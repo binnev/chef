@@ -45,42 +45,60 @@ def _format_ingredient_for_list(
     width: int = 0,
 ) -> str:
     result = f"{ing_name}:".ljust(width)
-    match [amounts.amountless, amounts.unitless, amounts.units]:
-        case [[], 0, __] if not __:  # guard for empty
-            print(f"apparently this is empty: {amounts.units}")
+    unique_recipes = len(set(amounts.amountless))
+    match [unique_recipes, amounts.unitless, len(amounts.units)]:
+        case [0, 0, 0]:
             raise ValueError("empty Amounts!")
 
-        # single line cases
-        case [amountless, 0, __] if not __:
-            recipe_strings = _foo(amountless)
+        # ========================= single line cases =========================
+        # only 1 unique recipe (could be repeated)
+        case [1, 0, 0]:
+            recipe_strings = (
+                amounts.amountless[0]
+                if (count := len(amounts.amountless)) == 1
+                else f"{amounts.amountless[0]} (x{count})"
+            )
             result += f" enough for {recipe_strings}"
-        case [[], unitless, __] if not __:
-            result += f" {unitless}"
-        case [[], 0, units] if len(units) == 1:
-            if len(units) == 1:
-                unit = next(iter(units))
-                amount = units[unit]
-                result += f" {amount} {unit}"
 
-        # multi line cases
-        case [amountless, unitless, units]:
-            if amountless:
-                recipe_strings = _foo(amountless)
-                result += f"\n\tenough for {recipe_strings}"
-            if unitless:
-                result += f"\n\t{unitless}"
-            for unit, amount in units.items():
+        # just the unitless amount
+        case [0, unitless, 0]:
+            result += f" {unitless}"
+
+        # only 1 unit e.g. {"kg": 2.5}
+        case [0, 0, 1]:
+            unit, amount = next(iter(amounts.units.items()))
+            result += f" {amount} {unit}"
+
+        # ========================== multi line cases ==========================
+        case _:
+            if amounts.amountless:
+                result += f"\n\t{_format_amountless(amounts.amountless)}"
+            if amounts.unitless:
+                result += f"\n\t{amounts.unitless}"
+            for unit, amount in amounts.units.items():
                 result += f"\n\t{amount} {unit}"
 
     return result
 
 
-def _foo(recipe_names: list[str]) -> str:
-    counts = {}
-    for name in recipe_names:
-        counts[name] = counts.get(name, 0) + 1
+def _format_amountless(names: list[str]) -> str:
+    def _format(name: str, count: int) -> str:
+        return name if count == 1 else f"{name} (x{count})"
 
-    return ", ".join(
-        name if count == 1 else f"{name} (x{count})"
-        for name, count in counts.items()
-    )
+    counts = _count(names)
+    if len(counts) == 1:
+        name, count = next(iter(counts.items()))
+        return f"enough for {_format(name, count)}"
+    else:
+        result = "enough for:"
+        for name, count in counts.items():
+            s = _format(name, count)
+            result += f"\n\t\t{s}"
+        return result
+
+
+def _count(names: list[str]) -> dict[str, int]:
+    counts = {}
+    for name in names:
+        counts[name] = counts.get(name, 0) + 1
+    return counts

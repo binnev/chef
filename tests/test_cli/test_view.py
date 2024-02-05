@@ -40,8 +40,22 @@ from cli.view import _format_ingredient_for_list
         pytest.param(
             "apples",
             Amounts(amountless=["apple pie", "apple pie", "something else"]),
-            "apples:\n\tenough for\n\t\tapple pie (x2)\n\t\tsomething else",
-            id="if more than one recipe in amountless, should be displayed as new nested list",
+            "apples:\n\tenough for:\n\t\tapple pie (x2)\n\t\tsomething else",
+            id=(
+                "if more than one recipe in amountless, should be displayed "
+                "as new nested list"
+            ),
+        ),
+        pytest.param(
+            "apples",
+            Amounts(
+                amountless=["apple pie", "apple pie", "something else"],
+                unitless=69,
+                units={"kg": 2.5, "bushels": 3},
+            ),
+            "apples:\n\tenough for:\n\t\tapple pie (x2)\n\t\tsomething "
+            "else\n\t69\n\t2.5 kg\n\t3 bushels",
+            id="all types combined",
         ),
     ],
 )
