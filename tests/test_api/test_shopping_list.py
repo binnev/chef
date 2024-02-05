@@ -1,5 +1,5 @@
 from api.ingredient import Ingredient
-from api.plan import merge_recipes
+from api.shopping_list import merge_recipes
 from api.recipe import Recipe
 
 import pytest

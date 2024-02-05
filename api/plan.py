@@ -4,9 +4,9 @@ from datetime import datetime
 from pydantic import BaseModel, Field
 
 from . import utils
-from .ingredient import Ingredient
 from .recipe import Recipe
 from .settings import settings
+from .shopping_list import merge_recipes, ShoppingList
 
 
 class Plan(BaseModel):
@@ -16,7 +16,7 @@ class Plan(BaseModel):
     def __str__(self):
         return f"Plan (created at {self.created})"
 
-    def shopping_list(self) -> list[Ingredient]:
+    def shopping_list(self) -> ShoppingList:
         """
         Merge the ingredients from self.recipes into one list of ingredients.
         """
@@ -55,16 +55,3 @@ class Plan(BaseModel):
     @property
     def filename(self):
         return settings.plans_dir / f"{self.created.isoformat()}.json"
-
-
-def merge_recipes(recipes: list[Recipe]) -> list[Ingredient]:
-    """
-    This is the magic.
-    :param recipes:
-    :return:
-    """
-    shopping_list = []
-    for recipe in recipes:
-        shopping_list.extend(recipe.ingredients)
-
-    return shopping_list

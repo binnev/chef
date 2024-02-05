@@ -5,7 +5,8 @@ view.py
 import typer
 
 import api
-from api.ingredient import Ingredient
+from api.shopping_list import Amounts
+from cli.utils import echo
 
 app = typer.Typer()
 
@@ -16,12 +17,12 @@ def view_plan():
     view_plan
     """
     plan = api.Plan.current()
-    typer.secho(f"Current plan:")
-    typer.secho(f"\tcreated: {plan.created.isoformat()}")
+    echo("Current plan:")
+    echo(f"\tcreated: {plan.created.isoformat()}")
     if plan.recipes:
-        typer.secho(f"\trecipes:")
+        echo("\trecipes:")
         for recipe in plan.recipes:
-            typer.secho(f"\t\t{recipe}")
+            echo(f"\t\t{recipe}")
 
 
 @app.command(name="list")
@@ -31,21 +32,55 @@ def view_list():
     """
     plan = api.Plan.current()
     ingredients = plan.shopping_list()
-    ingredients = sorted(ingredients, key=lambda ing: ing.name)
-    typer.secho("Current shopping list:")
-    for ing in ingredients:
-        typer.secho(f"\t{_format_ingredient_for_list(ing)}")
+    echo("Current shopping list:")
+    width = max(map(len, ingredients))
+    for ing_name in sorted(ingredients):
+        amounts = ingredients[ing_name]
+        echo(_format_ingredient_for_list(ing_name, amounts, width))
 
 
-def _format_ingredient_for_list(ing: Ingredient) -> str:
-    s = f"{ing.name}"
-    match [ing.amount, ing.unit]:
-        case [amount, ""]:
-            s += f": {amount}"
-        case [amount, unit]:
-            s += f": {amount} {unit}"
+def _format_ingredient_for_list(
+    ing_name: str,
+    amounts: Amounts,
+    width: int = 0,
+) -> str:
+    result = f"{ing_name}:".ljust(width)
+    match [amounts.amountless, amounts.unitless, amounts.units]:
+        case [[], 0, __] if not __:  # guard for empty
+            print(f"apparently this is empty: {amounts.units}")
+            raise ValueError("empty Amounts!")
 
-    if ing.prep:
-        s += f"; {ing.prep}"
+        # single line cases
+        case [amountless, 0, __] if not __:
+            recipe_strings = _foo(amountless)
+            result += f" enough for {recipe_strings}"
+        case [[], unitless, __] if not __:
+            result += f" {unitless}"
+        case [[], 0, units] if len(units) == 1:
+            if len(units) == 1:
+                unit = next(iter(units))
+                amount = units[unit]
+                result += f" {amount} {unit}"
 
-    return s
+        # multi line cases
+        case [amountless, unitless, units]:
+            if amountless:
+                recipe_strings = _foo(amountless)
+                result += f"\n\tenough for {recipe_strings}"
+            if unitless:
+                result += f"\n\t{unitless}"
+            for unit, amount in units.items():
+                result += f"\n\t{amount} {unit}"
+
+    return result
+
+
+def _foo(recipe_names: list[str]) -> str:
+    counts = {}
+    for name in recipe_names:
+        counts[name] = counts.get(name, 0) + 1
+
+    return ", ".join(
+        name if count == 1 else f"{name} (x{count})"
+        for name, count in counts.items()
+    )

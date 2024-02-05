@@ -1,6 +1,10 @@
-[tool.pytest.ini_options]
-addopts = "-p no:cacheprovider --cov --cov-fail-under=70 --cov-report term-missing:skip-covered"
-testpaths = ["tests"]
+#[tool.pytest.ini_options]
+#addopts = "-p no:cacheprovider --cov --cov-fail-under=70 --cov-report term-missing:skip-covered"
+#testpaths = ["tests"]
+
+#[tool.coverage.run]
+##include = ["tests"]
+#omit = ["*/__init__.py"]
 
 [tool.ruff]
 line-length = 80

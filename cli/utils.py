@@ -1,8 +1,26 @@
+import typing as t
 from typing import TypeVar
 
 import inquirer
+import typer
 
 T = TypeVar("T")
+
+
+def echo(
+    s: str,
+    nl: bool = True,
+    err: bool = False,
+    color: t.Optional[bool] = None,
+    **styles: t.Any,
+):
+    typer.secho(
+        s.expandtabs(4),
+        nl=nl,
+        err=err,
+        color=color,
+        **styles,
+    )
 
 
 def multiple_choice_menu(prompt: str, choices: dict[str, T]) -> T:
