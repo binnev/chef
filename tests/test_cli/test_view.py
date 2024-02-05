@@ -9,7 +9,7 @@ from cli.view import _format_ingredient_for_list
     [
         pytest.param(
             "apples",
-            Amounts(amountless=["apple pie"]),
+            Amounts(enough_for=["apple pie"]),
             "apples: enough for apple pie",
             id="should fit on one line if only amountless",
         ),
@@ -27,19 +27,19 @@ from cli.view import _format_ingredient_for_list
         ),
         pytest.param(
             "apples",
-            Amounts(amountless=["apple pie"], unitless=4),
+            Amounts(enough_for=["apple pie"], unitless=4),
             "apples:\n\tenough for apple pie\n\t4",
             id="if multiple amount types, print on multiple lines",
         ),
         pytest.param(
             "apples",
-            Amounts(amountless=["apple pie", "apple pie"]),
+            Amounts(enough_for=["apple pie", "apple pie"]),
             "apples: enough for apple pie (x2)",
             id="repeated recipes should be squashed",
         ),
         pytest.param(
             "apples",
-            Amounts(amountless=["apple pie", "apple pie", "something else"]),
+            Amounts(enough_for=["apple pie", "apple pie", "something else"]),
             "apples:\n\tenough for:\n\t\tapple pie (x2)\n\t\tsomething else",
             id=(
                 "if more than one recipe in amountless, should be displayed "
@@ -49,7 +49,7 @@ from cli.view import _format_ingredient_for_list
         pytest.param(
             "apples",
             Amounts(
-                amountless=["apple pie", "apple pie", "something else"],
+                enough_for=["apple pie", "apple pie", "something else"],
                 unitless=69,
                 units={"kg": 2.5, "bushels": 3},
             ),

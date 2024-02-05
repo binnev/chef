@@ -10,7 +10,7 @@ RecipeName = str
 
 class Amounts(BaseModel):
     # from "apples" -> display as "enough for x"
-    amountless: list[RecipeName] = []
+    enough_for: list[RecipeName] = []
 
     # from "4 apples"
     unitless: Amount = 0
@@ -24,7 +24,7 @@ ShoppingList = dict[IngredientName, Amounts]
 
 example = ShoppingList(
     apples=Amounts(
-        amountless=["apple pie"],
+        enough_for=["apple pie"],
         unitless=4,
         units=dict(kg=4),
     ),
@@ -44,7 +44,7 @@ def merge_recipes(recipes: list[Recipe]) -> ShoppingList:
             amounts = shopping_list.get(ing.name, Amounts())
             match [ing.amount, ing.unit]:
                 case [0, ""]:
-                    amounts.amountless.append(recipe.name)
+                    amounts.enough_for.append(recipe.name)
                 case [amount, ""]:
                     amounts.unitless += amount
                 case [amount, unit]:

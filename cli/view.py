@@ -45,7 +45,7 @@ def _format_ingredient_for_list(
     width: int = 0,
 ) -> str:
     result = f"{ing_name}:".ljust(width)
-    unique_recipes = len(set(amounts.amountless))
+    unique_recipes = len(set(amounts.enough_for))
     match [unique_recipes, amounts.unitless, len(amounts.units)]:
         case [0, 0, 0]:
             raise ValueError("empty Amounts!")
@@ -54,9 +54,9 @@ def _format_ingredient_for_list(
         # only 1 unique recipe (could be repeated)
         case [1, 0, 0]:
             recipe_strings = (
-                amounts.amountless[0]
-                if (count := len(amounts.amountless)) == 1
-                else f"{amounts.amountless[0]} (x{count})"
+                amounts.enough_for[0]
+                if (count := len(amounts.enough_for)) == 1
+                else f"{amounts.enough_for[0]} (x{count})"
             )
             result += f" enough for {recipe_strings}"
 
@@ -71,8 +71,8 @@ def _format_ingredient_for_list(
 
         # ========================== multi line cases ==========================
         case _:
-            if amounts.amountless:
-                result += f"\n\t{_format_amountless(amounts.amountless)}"
+            if amounts.enough_for:
+                result += f"\n\t{_format_amountless(amounts.enough_for)}"
             if amounts.unitless:
                 result += f"\n\t{amounts.unitless}"
             for unit, amount in amounts.units.items():
