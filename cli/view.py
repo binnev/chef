@@ -39,6 +39,14 @@ def view_list():
         echo(_format_ingredient_for_list(ing_name, amounts, width))
 
 
+@app.command(name="recipe")
+def view_recipe():
+    """
+    view recipe
+    """
+    # todo: serialize recipe nicely for terminal
+
+
 def _format_ingredient_for_list(
     ing_name: str,
     amounts: Amounts,

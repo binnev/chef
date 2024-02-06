@@ -33,6 +33,18 @@ update configuration
 sous-chef config set --key value 
 ```
 
+# TODO: 
+
+```shell
+sous-chef new alias "ground cumin" "cumin powder"
+```
+
+```shell
+sous-chef new category poultry 
+sous-chef categorise chicken poultry
+```
+
+
 
 This is a more natural language style:
 - sous-chef 

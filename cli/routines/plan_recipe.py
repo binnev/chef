@@ -28,9 +28,10 @@ async def plan_recipe(query: str):
             # if there's only one match, don't bother prompting the user
             recipe = matches[0]
         case _:
+            # todo: allow Ctrl+C and abort gracefullys
             recipe = multiple_choice_menu(
                 prompt="Which recipe did you mean?",
-                choices={r.name: r for r in all_recipes},
+                choices={r.name: r for r in matches},
             )
 
     plan.add(recipe)
