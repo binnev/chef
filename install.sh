@@ -1,12 +1,12 @@
 #!/bin/sh
 
-name="sous-chef"
+name="chef"
 
 # build
 pyinstaller entrypoint.py --name $name --onefile --clean
 
 # install
-sudo cp dist/$name /usr/local/bin
+cp dist/$name ~/.local/bin
 
 #clean up
 rm -R build
