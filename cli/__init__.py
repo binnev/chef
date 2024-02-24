@@ -24,11 +24,15 @@ def config(
     Update and/or view configuration
     """
     settings = Settings.from_file()
-    if (recipe_library := Path(recipe_library)).exists():
-        settings.recipe_library = recipe_library
-        settings.save()
-    else:
-        typer.echo(f"{recipe_library} does not exist")
+    if recipe_library:
+        print(f"{recipe_library=}")
+        if (recipe_library := Path(recipe_library)).exists():
+            absolute_path = recipe_library.absolute()
+            settings.recipe_library = absolute_path
+            print(F"Saving recipe library: {absolute_path}")
+            settings.save()
+        else:
+            typer.echo(f"{recipe_library} does not exist")
 
     print("config: ")
     for key, val in settings.model_dump().items():
