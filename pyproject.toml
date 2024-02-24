@@ -1,10 +1,13 @@
-#[tool.pytest.ini_options]
+[tool.pytest.ini_options]
 #addopts = "-p no:cacheprovider --cov --cov-fail-under=70 --cov-report term-missing:skip-covered"
-#testpaths = ["tests"]
+testpaths = ["tests"]
+markers = [
+    "allow_settings_save: by default, Settings.save is mocked, so we don't create real files when running tests.",
+]
 
-#[tool.coverage.run]
-##include = ["tests"]
-#omit = ["*/__init__.py"]
+[tool.coverage.run]
+omit = ["*/__init__.py"]
+
 
 [tool.ruff]
 line-length = 80
@@ -13,3 +16,4 @@ line-length = 80
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["E402"]
 "**/{tests,docs,tools}/*" = ["E402"]
+

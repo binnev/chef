@@ -5,7 +5,7 @@ from pydantic import BaseModel, Field
 
 from . import utils
 from .recipe import Recipe
-from .settings import settings
+from .settings import Settings
 from .shopping_list import merge_recipes, ShoppingList
 
 
@@ -40,6 +40,7 @@ class Plan(BaseModel):
 
     @classmethod
     def current(cls) -> "Plan":
+        settings = Settings.from_file()
         json_files = settings.plans_dir.glob("*.json")
         latest = max(json_files)  # relying on string comparison here
         with open(latest) as file:
@@ -54,4 +55,5 @@ class Plan(BaseModel):
 
     @property
     def filename(self):
+        settings = Settings.from_file()
         return settings.plans_dir / f"{self.created.isoformat()}.json"

@@ -3,10 +3,10 @@ from pathlib import Path
 
 import aiofiles
 import yaml
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from .ingredient import Ingredient, parse_ingredient_str
-from .settings import settings
+from .settings import Settings
 
 
 class Recipe(BaseModel):
@@ -21,7 +21,7 @@ class Recipe(BaseModel):
     notes: str = ""
 
     # child objects
-    ingredients: list[Ingredient]
+    ingredients: list[Ingredient] = Field()
 
     # for something like a salsa or a spice mix, the "method" is just:
     # combine all the ingredients. So method should not be mandatory.
@@ -64,7 +64,8 @@ class Recipe(BaseModel):
         """
         Load all the recipes from yaml
         """
-        filenames = settings.recipes_dir.glob("*.yaml")
+        settings = Settings.from_file()
+        filenames = settings.recipe_library.glob("*.yaml")
         return list(await asyncio.gather(*(cls.load(f) for f in filenames)))
 
     @classmethod

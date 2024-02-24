@@ -1,8 +1,9 @@
 import asyncio
+from pathlib import Path
 
 import typer
 
-from api.settings import settings
+from api.settings import Settings
 from cli import new, routines
 from cli import view
 
@@ -13,18 +14,21 @@ app.add_typer(view.app, name="view", help="view help")
 
 @app.command()
 def config(
-    foo: str = typer.Option(
+    recipe_library: str = typer.Option(
         "",
-        "--foo",
-        help="Dummy value",
+        "--recipe-library",
+        help="The folder in which the YAML recipes are stored",
     ),
 ):
     """
     Update and/or view configuration
     """
-    typer.secho("todo: config set ")
-    if foo:
-        typer.secho(f"You passed {foo=}")
+    settings = Settings.from_file()
+    if (recipe_library := Path(recipe_library)).exists():
+        settings.recipe_library = recipe_library
+        settings.save()
+    else:
+        typer.echo(f"{recipe_library} does not exist")
 
     print("config: ")
     for key, val in settings.model_dump().items():

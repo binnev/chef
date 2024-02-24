@@ -1,39 +1,29 @@
-import json
 from pathlib import Path
 
-from pydantic import Field
+from pydantic import Field, ValidationError
 from pydantic_settings import BaseSettings
+
 from . import utils
 
 BASE = Path.home() / ".sous-chef"
-SETTINGS_FILE = BASE / "settings.json"
-RECIPES_DIR = BASE / "recipes"
-PLANS_DIR = BASE / "plans"
+GLOBAL_SETTINGS_FILE = BASE / "settings.json"
 
 
 class Settings(BaseSettings):
-    recipes_dir: Path = Field(RECIPES_DIR)
-    plans_dir: Path = Field(PLANS_DIR)
+    recipe_library: Path = Field(BASE / "recipes")
+    plans_dir: Path = Field(BASE / "plans")
 
-    def save(self):
-        utils.touch(SETTINGS_FILE)
-        with open(SETTINGS_FILE, "w") as file:
-            json.dump(self.model_dump(), file)
+    def save(self) -> None:
+        utils.touch(GLOBAL_SETTINGS_FILE)
+        with open(GLOBAL_SETTINGS_FILE, "w") as file:
+            file.write(self.model_dump_json())
 
-    def load(self):
-        utils.touch(SETTINGS_FILE)
-        with open(SETTINGS_FILE) as file:
-            try:
-                settings_dict = json.load(file)
-            except json.JSONDecodeError:  # file is empty
-                settings_dict = {}
+    @classmethod
+    def from_file(cls) -> "Settings":
+        try: 
+            with open(GLOBAL_SETTINGS_FILE) as file:
+                json_str = file.read()
+                return cls.model_validate_json(json_str)
 
-        self.update(**settings_dict)
-
-    def update(self, **kwargs):
-        combined = {**self.model_dump(), **kwargs}
-        self.__init__(**combined)
-
-
-settings = Settings()
-settings.load()
+        except (FileNotFoundError, ValidationError):
+            return cls()  # defaults
