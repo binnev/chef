@@ -1,5 +1,5 @@
 [tool.pytest.ini_options]
-#addopts = "-p no:cacheprovider --cov --cov-fail-under=70 --cov-report term-missing:skip-covered"
+addopts = "-p no:cacheprovider --cov --cov-fail-under=70 --cov-report term-missing:skip-covered"
 testpaths = ["tests"]
 markers = [
     "allow_settings_save: by default, Settings.save is mocked, so we don't create real files when running tests.",
