@@ -35,20 +35,20 @@ def test_save(mock_open, mock_touch):
     "json_string, expected_library_path",
     [
         (
-                '{"recipe_library":"some/path"}',
-                Path("some/path"),
+            '{"recipe_library":"some/path"}',
+            Path("some/path"),
         ),
         (
-                "",
-                BASE.joinpath("recipes"),
+            "",
+            BASE.joinpath("recipes"),
         ),
     ],
 )
 @patch("api.settings.open")
 def test_from_file(
-        mock_open,
-        json_string: str,
-        expected_library_path: Path,
+    mock_open,
+    json_string: str,
+    expected_library_path: Path,
 ):
     mock_file = MagicMock()
     mock_file.read.return_value = json_string

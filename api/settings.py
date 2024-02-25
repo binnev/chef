@@ -20,7 +20,7 @@ class Settings(BaseSettings):
 
     @classmethod
     def from_file(cls) -> "Settings":
-        try: 
+        try:
             with open(GLOBAL_SETTINGS_FILE) as file:
                 json_str = file.read()
                 return cls.model_validate_json(json_str)
