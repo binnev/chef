@@ -63,3 +63,11 @@ def plan(
     """
     query = " ".join(query)
     asyncio.run(routines.plan_recipe(query))
+
+
+@app.command()
+def export():
+    """
+    Convert YAML recipes to markdown
+    """
+    asyncio.run(routines.export_recipes())

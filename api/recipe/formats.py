@@ -1,6 +1,6 @@
 import yaml
 
-from api.recipe.base import Recipe
+from api.recipe.recipe import Recipe
 
 
 def serialize_yaml(recipe: Recipe) -> str:
@@ -18,7 +18,7 @@ def serialize_json(recipe: Recipe) -> str:
 
 
 def serialize_markdown(recipe: Recipe) -> str:
-    out =""
+    out = ""
 
     def add_line(s: str):
         nonlocal out

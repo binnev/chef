@@ -66,7 +66,8 @@ class Recipe(BaseModel):
         Load all the recipes from yaml
         """
         settings = Settings.from_file()
-        filenames = settings.recipe_library.glob("*.yaml")
+        # todo: de-dupe these paths
+        filenames = settings.recipe_library.joinpath("yaml").glob("*.yaml")
         return list(await asyncio.gather(*(cls.load(f) for f in filenames)))
 
     @classmethod

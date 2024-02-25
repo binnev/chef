@@ -2,7 +2,7 @@ import enum
 import typing as t
 
 from api.recipe import formats
-from api.recipe.base import Recipe
+from api.recipe.recipe import Recipe
 
 
 class Format(enum.Enum):
