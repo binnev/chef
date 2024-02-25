@@ -1,8 +1,11 @@
 import pytest
+import yaml
 
 from api.ingredient import Ingredient
 from api.ingredient import IngredientParseError, parse_ingredient_str
-from api.recipe import Recipe, preprocess_yaml
+from api.recipe import Recipe
+from api.recipe.formats import serialize_yaml
+from api.recipe.utils import preprocess_yaml
 
 
 @pytest.mark.parametrize(
@@ -144,3 +147,29 @@ def test_preprocess_yaml(
 
     else:
         assert preprocess_yaml(recipe_dict) == expected
+
+
+def test_serialize_yaml():
+    recipe_dict = {
+        "name": "foo",
+        "author": "bar",
+        "ingredients": [
+            {"name": "poopoo"},
+            {"name": "train", "amount": 4},
+            {"name": "weewee", "amount": 4, "unit": "l"},
+        ],
+    }
+    recipe = Recipe.validate(recipe_dict)
+    yaml_str = serialize_yaml(recipe)
+    # the order of keys in the yaml string output is not reliable, so we have
+    # to parse back to dict
+    yaml_dict = yaml.safe_load(yaml_str)
+    assert yaml_dict == {
+        "name": "foo",
+        "author": "bar",
+        "ingredients": [
+            "poopoo",
+            "4, train",
+            "4, l, weewee",
+        ],
+    }

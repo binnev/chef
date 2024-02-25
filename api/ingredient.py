@@ -27,6 +27,22 @@ class Ingredient(BaseModel):
 
         return result
 
+    def to_yaml_str(self):
+        match [self.name, self.amount, self.unit]:
+            case [name, 0, ""]:
+                result = f"{name}"
+            case [name, amount, ""]:
+                result = f"{amount}, {name}"
+            case [name, amount, unit]:
+                result = f"{amount}, {unit}, {name}"
+            case _:
+                raise RuntimeError("unreachable")
+
+        if self.prep:
+            result += f"; {self.prep}"
+
+        return result
+
 
 def parse_ingredient_str(s: str) -> dict:
     """
