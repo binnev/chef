@@ -134,17 +134,17 @@ def test__parse_number(s: str, expected: int | float | IngredientParseError):
     "ingredient, expected",
     [
         (Ingredient(name="apples"), "apples"),
-        (Ingredient(name="apples", prep="chopped"), "apples; chopped"),
+        (Ingredient(name="apples", prep="chopped"), "apples, chopped"),
         (Ingredient(name="apples", amount=2), "2 apples"),
         (
             Ingredient(name="apples", amount=2, prep="chopped"),
-            "2 apples; chopped",
+            "2 apples, chopped",
         ),
         (Ingredient(name="apples", amount=2.5), "2.5 apples"),
         (Ingredient(name="apples", amount=2, unit="kg"), "2 kg apples"),
         (
             Ingredient(name="apples", amount=2, unit="kg", prep="chopped"),
-            "2 kg apples; chopped",
+            "2 kg apples, chopped",
         ),
     ],
 )
