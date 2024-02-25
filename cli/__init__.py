@@ -9,8 +9,8 @@ from cli import new, routines
 from cli import view
 
 app = typer.Typer()
-app.add_typer(new.app, name="new", help="new help")
-app.add_typer(view.app, name="view", help="view help")
+app.add_typer(new.app, name="new", help="Create new plan, recipe, etc")
+app.add_typer(view.app, name="view", help="View plan, shopping list, etc")
 
 
 @app.command()
@@ -19,6 +19,9 @@ def init(
         help="The path in which to initialise a new recipe library"
     ),
 ):
+    """
+    Initialise a new recipe library
+    """
     path = path.absolute()
     print(f"you passed {path=}")
     api.init_library(path)
@@ -56,7 +59,7 @@ def plan(
     query: list[str] = typer.Argument(help="Search term to find recipes"),
 ):
     """
-    plan <search>
+    Add a recipe to a plan
     """
     query = " ".join(query)
     asyncio.run(routines.plan_recipe(query))
