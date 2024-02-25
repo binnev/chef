@@ -6,6 +6,7 @@ import aiofiles
 from api import Recipe, RecipeSerializer
 from api import Settings
 from api.recipe.serializer import Format
+from api.utils import clean_filename
 
 
 async def export_recipes():
@@ -20,7 +21,7 @@ async def export_recipes():
 
 async def _serialize(recipe: Recipe, dest_dir: Path):
     stringified = recipe.name.replace(" ", "-")  # TODO: handle other punct
-    filename = dest_dir / f"{stringified}.md"
+    filename = clean_filename(dest_dir / f"{stringified}.md")
     serialized = RecipeSerializer().serialize(recipe, Format.MARKDOWN)
     async with aiofiles.open(filename, "w") as file:
         await file.write(serialized)
