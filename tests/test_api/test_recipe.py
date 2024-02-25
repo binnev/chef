@@ -159,7 +159,7 @@ def test_serialize_yaml():
             {"name": "weewee", "amount": 4, "unit": "l"},
         ],
     }
-    recipe = Recipe.validate(recipe_dict)
+    recipe = Recipe.model_validate(recipe_dict)
     yaml_str = serialize_yaml(recipe)
     # the order of keys in the yaml string output is not reliable, so we have
     # to parse back to dict
@@ -245,6 +245,6 @@ Notes: In this recipe we make the base curry sauce and the madras in one go.
 9. Then add the madras curry powder and water.
 10. Garnish with coriander leaves."""
     recipe_dict = yaml.safe_load(yaml_input)
-    recipe = Recipe.validate(preprocess_yaml(recipe_dict))
+    recipe = Recipe.model_validate(preprocess_yaml(recipe_dict))
     out = serialize_markdown(recipe)
     assert out == expected_markdown
