@@ -211,9 +211,13 @@ method:
 """
 
     expected_markdown = """# Neelam Bajwa's chicken madras
+
 Author: Neelam Bajwa
+
 From: https://www.youtube.com/watch?v=43yWAafyFMQ
+
 Notes: In this recipe we make the base curry sauce and the madras in one go.
+
 ## Ingredients:
 - [ ] 2 tbsp ghee or veg oil
 - [ ] 2 onions
@@ -228,6 +232,7 @@ Notes: In this recipe we make the base curry sauce and the madras in one go.
 - [ ] 1 tbsp coriander powder
 - [ ] 1.5 tsp ground methi seeds
 - [ ] fresh coriander
+
 ## Method:
 1. Prepare the gravy spice mix; pinch of turmeric powder, 1 tsp cumin powder, 1tsp coriander powder and 1.5 tsp ground fenugreek seeds.
 2. Prepare the madras spice mix; 4 cardamoms, 1 tsp turmeric powder, 1 tbsp coriander powder, 1 tbsp cumin powder, 2 tbsp red chilli powder.
@@ -238,8 +243,7 @@ Notes: In this recipe we make the base curry sauce and the madras in one go.
 7. In a saucepan heat ghee and add Kashmiri red chillies, ginger-garlic paste, tomato puree, madras spice mix, slit green chillies, salt and stir well.
 8. Add the chicken and cook in the madras spice paste for a few minutes. Add the base curry sauce and cook on high flame.
 9. Then add the madras curry powder and water.
-10. Garnish with coriander leaves.
-"""
+10. Garnish with coriander leaves."""
     recipe_dict = yaml.safe_load(yaml_input)
     recipe = Recipe.validate(preprocess_yaml(recipe_dict))
     out = serialize_markdown(recipe)

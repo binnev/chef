@@ -18,38 +18,40 @@ def serialize_json(recipe: Recipe) -> str:
 
 
 def serialize_markdown(recipe: Recipe) -> str:
-    out = ""
+    strings = []
 
-    def add_line(s: str):
-        nonlocal out
-        out += s + "\n"
-
-    add_line(f"# {recipe.name}")
-    add_line(f"Author: {recipe.author.title()}")
+    title_block = f"# {recipe.name}"
     if recipe.image:
-        add_line(f"![]({recipe.image})")
-    if recipe.source:
-        add_line(f"From: {recipe.source}")
-    if recipe.servings:
-        add_line(f"Servings: {recipe.servings}")
-    if recipe.prep_minutes:
-        add_line(f"Preparation: {recipe.prep_minutes} minutes")
-    if recipe.cook_minutes:
-        add_line(f"Cooking: {recipe.cook_minutes} minutes")
-    if recipe.notes:
-        add_line(f"Notes: {recipe.notes}")
-    if recipe.equipment:
-        add_line("Equipment: ")
-        for item in recipe.equipment:
-            add_line(f"- {item}")
+        title_block += f"\n![](../images/{recipe.image})"
+    title_block += f"\n\nAuthor: {recipe.author.title()}"
+    strings.append(title_block)
 
-    add_line("## Ingredients:")
+    if recipe.source:
+        strings.append(f"From: {recipe.source}")
+    if recipe.servings:
+        strings.append(f"Servings: {recipe.servings}")
+    if recipe.prep_minutes:
+        strings.append(f"Preparation: {recipe.prep_minutes} minutes")
+    if recipe.cook_minutes:
+        strings.append(f"Cooking: {recipe.cook_minutes} minutes")
+    if recipe.notes:
+        strings.append(f"Notes: {recipe.notes}")
+
+    if recipe.equipment:
+        equipment_str = "## Equipment: "
+        for item in recipe.equipment:
+            equipment_str += f"\n- {item}"
+        strings.append(equipment_str)
+
+    ingredients_str = "## Ingredients:"
     for ing in recipe.ingredients:
-        add_line(f"- [ ] {ing}")
+        ingredients_str += f"\n- [ ] {ing}"
+    strings.append(ingredients_str)
 
     if recipe.method:
-        add_line("## Method:")
+        method_str = "## Method:"
         for ii, step in enumerate(recipe.method, start=1):
-            add_line(f"{ii}. {step}")
+            method_str += f"\n{ii}. {step}"
+        strings.append(method_str)
 
-    return out
+    return "\n\n".join(strings)
