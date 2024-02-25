@@ -3,6 +3,7 @@ from pathlib import Path
 
 import typer
 
+import api
 from api.settings import Settings
 from cli import new, routines
 from cli import view
@@ -10,6 +11,17 @@ from cli import view
 app = typer.Typer()
 app.add_typer(new.app, name="new", help="new help")
 app.add_typer(view.app, name="view", help="view help")
+
+
+@app.command()
+def init(
+    path: Path = typer.Argument(
+        help="The path in which to initialise a new recipe library"
+    ),
+):
+    path = path.absolute()
+    print(f"you passed {path=}")
+    api.init_library(path)
 
 
 @app.command()
@@ -29,7 +41,7 @@ def config(
         if (recipe_library := Path(recipe_library)).exists():
             absolute_path = recipe_library.absolute()
             settings.recipe_library = absolute_path
-            print(F"Saving recipe library: {absolute_path}")
+            print(f"Saving recipe library: {absolute_path}")
             settings.save()
         else:
             typer.echo(f"{recipe_library} does not exist")
