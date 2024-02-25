@@ -23,7 +23,7 @@ class Ingredient(BaseModel):
                 raise RuntimeError("unreachable")
 
         if self.prep:
-            result += f"; {self.prep}"
+            result += f", {self.prep}"
 
         return result
 

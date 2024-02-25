@@ -1,11 +1,13 @@
 import enum
 import typing as t
 
+from api.recipe import formats
 from api.recipe.base import Recipe
 
 
 class Format(enum.Enum):
     YAML = enum.auto()
+    MARKDOWN = enum.auto()
 
 
 # function which takes a recipe and serializes it to some string format
@@ -14,7 +16,7 @@ SerializerFunc = t.Callable[[Recipe], str]
 
 class RecipeSerializer:
     """
-    RecipeSerializer(fmt=Format.YAML).serialize(recipe)
+    RecipeSerializer.serialize(recipe, fmt=Format.MARKDOWN)
     """
 
     _handlers: dict[Format, SerializerFunc] = {}
@@ -32,8 +34,5 @@ class RecipeSerializer:
         cls._handlers[fmt] = handler
 
 
-
-
-RecipeSerializer.register(Format.YAML, ...)
-
-
+RecipeSerializer.register(Format.YAML, formats.serialize_yaml)
+RecipeSerializer.register(Format.MARKDOWN, formats.serialize_markdown)
