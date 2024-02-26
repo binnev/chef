@@ -3,10 +3,10 @@ from pathlib import Path
 
 import typer
 
-import api
-from api.settings import Settings
-from cli import new, routines
-from cli import view
+from . import new, routines
+from . import view
+from .. import api
+from ..api.settings import Settings
 
 app = typer.Typer()
 app.add_typer(new.app, name="new", help="Create new plan, recipe, etc")
