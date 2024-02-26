@@ -2,6 +2,20 @@
 
 A command-line tool for managing recipes and making shopping lists.
 
+# Installation
+
+Clone this repository, set up a venv, and run
+
+```shell
+./install.sh
+```
+
+You may need to give the file run permissions with
+
+```shell
+chmod +x install.sh
+```
+
 # Usage
 
 Initialise a new recipe library in the current folder:
