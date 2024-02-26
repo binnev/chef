@@ -4,7 +4,7 @@ new.py
 
 import typer
 
-import api
+from .. import api
 
 app = typer.Typer()
 

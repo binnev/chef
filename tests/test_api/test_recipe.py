@@ -1,11 +1,11 @@
 import pytest
 import yaml
 
-from api.ingredient import Ingredient
-from api.ingredient import IngredientParseError, parse_ingredient_str
-from api.recipe import Recipe
-from api.recipe.formats import serialize_yaml, serialize_markdown
-from api.recipe.utils import preprocess_yaml
+from src.api.ingredient import Ingredient
+from src.api.ingredient import IngredientParseError, parse_ingredient_str
+from src.api.recipe import Recipe
+from src.api.recipe.formats import serialize_yaml, serialize_markdown
+from src.api.recipe.utils import preprocess_yaml
 
 
 @pytest.mark.parametrize(

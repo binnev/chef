@@ -1,7 +1,7 @@
 import pytest
 
-from api.shopping_list import Amounts
-from cli.view import _format_ingredient_for_list
+from src.api.shopping_list import Amounts
+from src.cli.view import _format_ingredient_for_list
 
 
 @pytest.mark.parametrize(

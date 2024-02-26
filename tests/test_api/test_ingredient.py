@@ -1,5 +1,5 @@
 import pytest
-from api.ingredient import (
+from src.api.ingredient import (
     IngredientParseError,
     parse_ingredient_str,
     Ingredient,

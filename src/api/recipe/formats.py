@@ -1,6 +1,6 @@
 import yaml
 
-from api.recipe.recipe import Recipe
+from .recipe import Recipe
 
 
 def serialize_yaml(recipe: Recipe) -> str:

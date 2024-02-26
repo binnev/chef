@@ -1,8 +1,8 @@
 import enum
 import typing as t
 
-from api.recipe import formats
-from api.recipe.recipe import Recipe
+from . import formats
+from .recipe import Recipe
 
 
 class Format(enum.Enum):

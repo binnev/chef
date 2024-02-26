@@ -4,9 +4,9 @@ view.py
 
 import typer
 
-import api
-from api.shopping_list import Amounts
-from cli.utils import echo
+from .. import api
+from ..api.shopping_list import Amounts
+from .utils import echo
 
 app = typer.Typer()
 

@@ -3,13 +3,13 @@ from unittest.mock import patch, MagicMock
 
 import pytest
 
-from api.settings import Settings, GLOBAL_SETTINGS_FILE, BASE
+from src.api.settings import Settings, GLOBAL_SETTINGS_FILE, BASE
 
 pytestmark = pytest.mark.allow_settings_save
 
 
-@patch("api.settings.utils.touch")
-@patch("api.settings.open")
+@patch("src.api.settings.utils.touch")
+@patch("src.api.settings.open")
 def test_save(mock_open, mock_touch):
     mock_file = MagicMock()
 
@@ -44,7 +44,7 @@ def test_save(mock_open, mock_touch):
         ),
     ],
 )
-@patch("api.settings.open")
+@patch("src.api.settings.open")
 def test_from_file(
     mock_open,
     json_string: str,

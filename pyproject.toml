@@ -41,6 +41,9 @@ dev = [
 [project.urls]
 Repository = "https://github.com/binnev/yes-chef"
 
+[tool.setuptools.packages.find]
+include = ["src*"]
+
 [tool.pytest.ini_options]
 addopts = "-p no:cacheprovider --cov --cov-fail-under=70 --cov-report term-missing:skip-covered"
 testpaths = ["tests"]

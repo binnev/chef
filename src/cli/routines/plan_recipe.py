@@ -1,9 +1,9 @@
 import typer
 from rich.progress import Progress, SpinnerColumn, TextColumn, TimeElapsedColumn
 
-from api import Plan
-from api.recipe import Recipe
-from cli.utils import multiple_choice_menu
+from ...api import Plan
+from ...api.recipe import Recipe
+from ..utils import multiple_choice_menu
 
 
 async def plan_recipe(query: str):
