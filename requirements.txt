@@ -1,12 +1,12 @@
 # core
-typer
-colorama
-rich
-shellingham
-pydantic
-pydantic_settings
-aiofiles
-inquirer
+typer>=0.9
+colorama>=0.4
+rich>=13.7
+shellingham>=1.5
+pydantic>=2.6
+pydantic-settings>=2.2
+aiofiles>=23.2
+inquirer>=3.2
 
 # development
 ruff
@@ -14,6 +14,12 @@ pytest
 pytest-asyncio
 pytest-cov
 responses
+commitizen
+mkdocs
+mkdocstrings[python]
+mike
 
 # build
+build
+twine
 pyinstaller

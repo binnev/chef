@@ -1,4 +1,4 @@
-# Chef
+# yes-chef
 
 A command-line tool for managing recipes and making shopping lists.
 

@@ -1,0 +1,10 @@
+site_name: My Docs
+theme: readthedocs
+
+plugins:
+  - search
+  - mkdocstrings
+  - mike
+
+nav:
+  - Home: index.md

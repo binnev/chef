@@ -1,8 +1,8 @@
 import pytest
 
-from api.ingredient import Ingredient
-from api.recipe import Recipe
-from api.shopping_list import merge_recipes, Amounts
+from src.api.ingredient import Ingredient
+from src.api.recipe import Recipe
+from src.api.shopping_list import merge_recipes, Amounts
 
 
 def _recipe(

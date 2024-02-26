@@ -2,7 +2,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from api.settings import Settings
+from src.api.settings import Settings
 
 
 @pytest.fixture(autouse=True)

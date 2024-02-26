@@ -1,4 +1,4 @@
-from api.ingredient import parse_ingredient_str
+from ..ingredient import parse_ingredient_str
 
 
 def preprocess_yaml(yaml_dict: dict) -> dict:
