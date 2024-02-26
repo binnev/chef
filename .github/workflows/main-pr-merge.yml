@@ -1,0 +1,32 @@
+name: main-pr-merge
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+
+  pypi:
+    runs-on: ubuntu-latest
+    name: PyPI
+    permissions:
+      # IMPORTANT: this permission is mandatory for trusted publishing
+      id-token: write
+    environment:
+      name: pypi
+      url: https://pypi.org/p/yes-chef
+    steps:
+      - uses: actions/checkout@v4
+      - run: git pull  # this is necessary to get the "bump" commit
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+      - run: pip install build twine
+      - name: Build
+        run: python -m build
+      - name: Check build
+        run: twine check dist/*
+      - name: PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
