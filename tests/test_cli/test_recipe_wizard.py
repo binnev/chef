@@ -78,9 +78,8 @@ def test_recipe_wizard__minimal(mock_input):
 
 @patch("src.cli.new.recipe_wizard")
 @patch("src.cli.new.open")
-def test_new_recipe(mock_open, mock_recipe_wizard, mock_open_file):
-    mock_file, mock_ctx = mock_open_file
-    mock_open.return_value = mock_ctx
+def test_new_recipe(mock_open, mock_recipe_wizard, mock_open_file_ctx):
+    mock_open.return_value = mock_open_file_ctx
 
     mock_recipe_wizard.return_value = Recipe(
         author="foo",
@@ -94,5 +93,5 @@ def test_new_recipe(mock_open, mock_recipe_wizard, mock_open_file):
     mock_open.assert_called_with(
         settings.recipe_library / "yaml" / "silly-pie.yaml", "w"
     )
-    mock_file.write.assert_called()
+    mock_open_file_ctx.mock_file.write.assert_called()
     assert result.exit_code == 0

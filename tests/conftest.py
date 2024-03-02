@@ -18,16 +18,20 @@ def mock_settings_save(request, monkeypatch):
 
 
 @pytest.fixture
-def mock_open_file():
-    mock_file = MagicMock()
-
+def mock_open_file_ctx():
     class MockOpenFileContext:
+        mock_file: MagicMock
+
+        def __init__(self):
+            super().__init__()
+            self.mock_file = MagicMock()
+
         def __enter__(self):
-            return mock_file
+            return self.mock_file
 
         def __exit__(self, *args, **kwargs):
             pass
 
     mock_ctx = MockOpenFileContext()
 
-    yield mock_file, mock_ctx
+    yield mock_ctx
