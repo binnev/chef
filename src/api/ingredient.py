@@ -9,6 +9,9 @@ class Ingredient(BaseModel):
 
     @classmethod
     def from_str(cls, s: str) -> "Ingredient":
+        """
+        :raises: ParseIngredientError
+        """
         return Ingredient(**parse_ingredient_str(s))
 
     def __str__(self):
@@ -58,7 +61,7 @@ def parse_ingredient_str(s: str) -> dict:
 
     match list(map(str.strip, s.split(";"))):
         case [""]:
-            raise IngredientParseError("empty input")
+            raise ParseIngredientError("empty input")
         case [s]:
             pass
         case [s, ""]:  # trailing ";" and empty prep
@@ -66,16 +69,16 @@ def parse_ingredient_str(s: str) -> dict:
         case [s, prep]:  # non-empty prep
             output["prep"] = prep
         case _:
-            raise IngredientParseError(f"Too many semicolons: {s}")
+            raise ParseIngredientError(f"Too many semicolons: {s}")
 
     match list(map(str.strip, s.split(","))):
         case [""]:
-            raise IngredientParseError("Got prep but no ingredients")
+            raise ParseIngredientError("Got prep but no ingredients")
         case [amount, name]:  # e.g. 1, apple
             if not name:
-                raise IngredientParseError("empty value: name")
+                raise ParseIngredientError("empty value: name")
             if not amount:
-                raise IngredientParseError("empty value: amount")
+                raise ParseIngredientError("empty value: amount")
             output["name"] = name
             output["amount"] = _parse_number(amount)
         case [amount, unit, name]:  # e,g. 1, kg, apples
@@ -85,12 +88,12 @@ def parse_ingredient_str(s: str) -> dict:
         case [name]:
             output["name"] = name
         case _:
-            raise IngredientParseError(f"Too many commas: {s}")
+            raise ParseIngredientError(f"Too many commas: {s}")
 
     return output
 
 
-class IngredientParseError(Exception):
+class ParseIngredientError(Exception):
     pass
 
 
@@ -104,7 +107,7 @@ def _parse_number(number: str) -> int | float:
     try:
         result = float(number)
     except ValueError:
-        raise IngredientParseError(f"invalid number: {number!r}")
+        raise ParseIngredientError(f"invalid number: {number!r}")
     else:
         if result % 1 == 0:
             return int(result)

@@ -2,7 +2,7 @@ import pytest
 import yaml
 
 from src.api.ingredient import Ingredient
-from src.api.ingredient import IngredientParseError, parse_ingredient_str
+from src.api.ingredient import ParseIngredientError, parse_ingredient_str
 from src.api.recipe import Recipe
 from src.api.recipe.formats import serialize_yaml, serialize_markdown
 from src.api.recipe.utils import preprocess_yaml
@@ -138,9 +138,9 @@ def test_search(
 )
 def test_preprocess_yaml(
     recipe_dict: dict,
-    expected: dict | IngredientParseError,
+    expected: dict | ParseIngredientError,
 ):
-    if isinstance(expected, IngredientParseError):
+    if isinstance(expected, ParseIngredientError):
         with pytest.raises(expected.__class__) as e:
             preprocess_yaml(recipe_dict)
         assert str(e.value) == str(expected)
