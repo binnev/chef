@@ -1,5 +1,5 @@
 from pathlib import Path
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 
 import pytest
 
@@ -10,17 +10,9 @@ pytestmark = pytest.mark.allow_settings_save
 
 @patch("src.api.settings.utils.touch")
 @patch("src.api.settings.open")
-def test_save(mock_open, mock_touch):
-    mock_file = MagicMock()
-
-    class MockOpenFileContext:
-        def __enter__(self):
-            return mock_file
-
-        def __exit__(self, *args, **kwargs):
-            pass
-
-    mock_open.return_value = MockOpenFileContext()
+def test_save(mock_open, mock_touch, mock_open_file):
+    mock_file, mock_ctx = mock_open_file
+    mock_open.return_value = mock_ctx
 
     settings = Settings()
     settings.save()
@@ -49,18 +41,11 @@ def test_from_file(
     mock_open,
     json_string: str,
     expected_library_path: Path,
+    mock_open_file,
 ):
-    mock_file = MagicMock()
+    mock_file, mock_ctx = mock_open_file
     mock_file.read.return_value = json_string
-
-    class MockOpenFileContext:
-        def __enter__(self):
-            return mock_file
-
-        def __exit__(self, *args, **kwargs):
-            pass
-
-    mock_open.return_value = MockOpenFileContext()
+    mock_open.return_value = mock_ctx
 
     settings = Settings.from_file()
     assert settings.recipe_library == expected_library_path

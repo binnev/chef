@@ -7,7 +7,7 @@ from src.api.recipe.serializer import Format
 from src.api.utils import clean_filename
 
 
-def recipe_wizard() -> Path:
+def recipe_wizard() -> Recipe:
     """
     Interactively guide the user through creating a new recipe
     """
@@ -51,14 +51,7 @@ def recipe_wizard() -> Path:
         image=prompt("image (url or local image)"),
         notes=prompt("notes"),
     )
-    yaml_str = RecipeSerializer().serialize(recipe, Format.YAML)
-    settings = Settings.from_file()
-    filename = clean_filename(
-        settings.recipe_library / "yaml" / f"{recipe.name}.yaml"
-    )
-    with open(filename, "w") as file:
-        file.write(yaml_str)
-    return filename
+    return recipe
 
 
 NOT_SET = object()
