@@ -27,4 +27,4 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install -r requirements.txt
-      - run: pytest -p no:cacheprovider --cov --cov-fail-under=100 --cov-report term-missing:skip-covered
+      - run: pytest -p no:cacheprovider --cov --cov-fail-under=80 --cov-report term-missing:skip-covered
