@@ -19,7 +19,6 @@ jobs:
       - run: pip install ruff
       - run: ruff format . --check
 
-
   test:
     runs-on: ubuntu-latest
     steps:
@@ -28,4 +27,4 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install -r requirements.txt
-      - run: pytest
+      - run: pytest -p no:cacheprovider --cov --cov-fail-under=100 --cov-report term-missing:skip-covered
