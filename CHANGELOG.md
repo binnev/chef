@@ -1,3 +1,9 @@
+## 0.6.1 (2024-03-03)
+
+### Fix
+
+- **readme-generation**: we now display author name in the recipe index
+
 ## 0.6.0 (2024-03-03)
 
 ### Feat
