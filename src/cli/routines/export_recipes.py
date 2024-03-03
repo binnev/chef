@@ -39,7 +39,8 @@ async def create_readme(recipes: dict[Path, Recipe]):
     for md_filename in sorted(recipes):
         recipe = recipes[md_filename]
         recipes_list.append(
-            f"- [{capitalise(recipe.name)}](md/{md_filename.name})"
+            f"- [{capitalise(recipe.name)}](md/{md_filename.name}) "
+            f"by {recipe.author}"
         )
     recipes_list_str = "\n".join(recipes_list)
     readme.append(recipes_list_str)
