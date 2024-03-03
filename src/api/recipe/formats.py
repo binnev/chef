@@ -1,6 +1,7 @@
 import yaml
 
 from .recipe import Recipe
+from .utils import capitalise
 
 
 def serialize_yaml(recipe: Recipe) -> str:
@@ -20,7 +21,7 @@ def serialize_json(recipe: Recipe) -> str:
 def serialize_markdown(recipe: Recipe) -> str:
     strings = []
 
-    title_block = f"# {recipe.name}"
+    title_block = f"# {capitalise(recipe.name)}"
     if recipe.image:
         title_block += f"\n![](../images/{recipe.image})"
     title_block += f"\n\nAuthor: {recipe.author.title()}"
@@ -40,18 +41,18 @@ def serialize_markdown(recipe: Recipe) -> str:
     if recipe.equipment:
         equipment_str = "## Equipment: "
         for item in recipe.equipment:
-            equipment_str += f"\n- {item}"
+            equipment_str += f"\n- {capitalise(item)}"
         strings.append(equipment_str)
 
     ingredients_str = "## Ingredients:"
     for ing in recipe.ingredients:
-        ingredients_str += f"\n- [ ] {ing}"
+        ingredients_str += f"\n- [ ] {capitalise(str(ing))}"
     strings.append(ingredients_str)
 
     if recipe.method:
         method_str = "## Method:"
         for ii, step in enumerate(recipe.method, start=1):
-            method_str += f"\n{ii}. {step}"
+            method_str += f"\n{ii}. {capitalise(step)}"
         strings.append(method_str)
 
     return "\n\n".join(strings)

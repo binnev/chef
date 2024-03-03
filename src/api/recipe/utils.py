@@ -14,3 +14,13 @@ def preprocess_yaml(yaml_dict: dict) -> dict:
             map(parse_ingredient_str, yaml_dict["ingredients"])
         )
     return yaml_dict
+
+
+def capitalise(s: str) -> str:
+    """
+    Just capitalise the first character; don't do anything else
+    """
+    if not s:
+        return s
+
+    return s[0].capitalize() + s[1:]

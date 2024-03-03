@@ -231,7 +231,7 @@ Notes: In this recipe we make the base curry sauce and the madras in one go.
 - [ ] 1 tbsp cumin powder
 - [ ] 1 tbsp coriander powder
 - [ ] 1.5 tsp ground methi seeds
-- [ ] fresh coriander
+- [ ] Fresh coriander
 
 ## Method:
 1. Prepare the gravy spice mix; pinch of turmeric powder, 1 tsp cumin powder, 1tsp coriander powder and 1.5 tsp ground fenugreek seeds.
