@@ -1,3 +1,9 @@
+## 0.4.1 (2024-03-03)
+
+### Fix
+
+- auto-capitalise items in markdown exports
+
 ## 0.4.0 (2024-03-02)
 
 ### Feat
