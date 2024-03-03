@@ -1,3 +1,13 @@
+## 0.5.0 (2024-03-03)
+
+### Feat
+
+- `chef export` now auto-generates an index of recipes in README.md
+
+### Fix
+
+- recipe list single spacing
+
 ## 0.4.1 (2024-03-03)
 
 ### Fix
