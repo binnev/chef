@@ -1,3 +1,13 @@
+## 0.6.0 (2024-03-03)
+
+### Feat
+
+- added --version argument.
+
+### Fix
+
+- export now writes which version of yes-chef was used
+
 ## 0.5.0 (2024-03-03)
 
 ### Feat
