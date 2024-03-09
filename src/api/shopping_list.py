@@ -1,8 +1,9 @@
 from pydantic import BaseModel, Field
 
 from .recipe import Recipe
+from .unit import normalise
 
-Amount = int | float
+Number = int | float
 Unit = str
 IngredientName = str
 RecipeName = str
@@ -13,30 +14,25 @@ class Amounts(BaseModel):
     enough_for: list[RecipeName] = []
 
     # from "4 apples"
-    unitless: Amount = 0
+    unitless: Number = 0
 
     # from "4 kg apples"
-    units: dict[Unit, Amount] = Field(default_factory=dict)
+    units: dict[Unit, Number] = Field(default_factory=dict)
 
 
 ShoppingList = dict[IngredientName, Amounts]
 
 
-example = ShoppingList(
-    apples=Amounts(
-        enough_for=["apple pie"],
-        unitless=4,
-        units=dict(kg=4),
-    ),
-    potatoes=Amounts(units=dict(kg=5)),
-)
-
-
 def merge_recipes(recipes: list[Recipe]) -> ShoppingList:
     """
-    This is the magic.
-    :param recipes:
-    :return:
+    Create a combined shopping list by merging the ingredients from all
+    multiple recipes.
+
+    Args:
+        recipes: the list of recipes we want to generate a shopping list for
+
+    Returns:
+        the merged shopping list
     """
     shopping_list = {}
     for recipe in recipes:
@@ -48,6 +44,7 @@ def merge_recipes(recipes: list[Recipe]) -> ShoppingList:
                 case [amount, ""]:
                     amounts.unitless += amount
                 case [amount, unit]:
+                    amount, unit = normalise(amount, unit)
                     amounts.units[unit] = amounts.units.get(unit, 0) + amount
             shopping_list[ing.name] = amounts
 
