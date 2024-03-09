@@ -11,15 +11,58 @@ from src.api.unit import (
 
 
 @pytest.mark.better_parametrize(
-    testcase := namedtuple("_", "args, expected"),
+    testcase := namedtuple("_", "args, expected, id"),
     [
-        testcase(args=(1, "g"), expected=(1, "g")),
-        testcase(args=(1, "ml"), expected=(1, "ml")),
-        testcase(args=(5, "kg"), expected=(5000, "g")),
-        testcase(args=(5, "kilos"), expected=(5000, "g")),
-        testcase(args=(10, "fluid ounces"), expected=(300, "ml")),
-        testcase(args=(10, "fl oz"), expected=(300, "ml")),
-        testcase(args=(2, "L"), expected=(2000, "ml")),
+        testcase(
+            id="sanity check",
+            args=(1, "g"),
+            expected=(1, "g"),
+        ),
+        testcase(
+            id="sanity check",
+            args=(1, "ml"),
+            expected=(1, "ml"),
+        ),
+        testcase(
+            id="convert denomination",
+            args=(5, "kg"),
+            expected=(5000, "g"),
+        ),
+        testcase(
+            id="convert denomination and alias",
+            args=(5, "kilos"),
+            expected=(5000, "g"),
+        ),
+        testcase(
+            id="convert amount",
+            args=(10, "fl oz"),
+            expected=(300, "ml"),
+        ),
+        testcase(
+            id="convert amount and alias",
+            args=(10, "fluid ounces"),
+            expected=(300, "ml"),
+        ),
+        testcase(
+            id="handle uppercase -> lowercase automatically",
+            args=(2, "L"),
+            expected=(2000, "ml"),
+        ),
+        testcase(
+            id="plural to singular",
+            args=(3, "sprigs"),
+            expected=(3, "sprig"),
+        ),
+        testcase(
+            id="singular to singular shouldn't fail",
+            args=(3, "sprig"),
+            expected=(3, "sprig"),
+        ),
+        testcase(
+            id="unknown unit should not cause an error",
+            args=(420, "foobars"),
+            expected=(420, "foobars"),
+        ),
     ],
 )
 def test_normalise(

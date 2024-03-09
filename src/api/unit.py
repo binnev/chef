@@ -1,20 +1,27 @@
-def normalise(amount: int | float, unit: str) -> tuple[int | float, str]:
+Number = int | float
+
+
+def normalise(amount: Number, unit: str) -> tuple[Number, str]:
     """
     Converts an amount + unit into the preferred internal format (grams or
-    millilitres)
+    millilitres) if possible
 
-    Should handle:
-    - alias (pounds -> lb)
-    - system (imperial -> metric) (lb -> kg)
-    - denomination (5kg -> 5000g)
+    Handles:
+        alias (pounds -> lb)
+        system (imperial -> metric) (lb -> kg)
+        denomination (5kg -> 5000g)
+
+    Args:
+        amount: the input amount e.g. 2.5
+        unit: the input unit e.g. "kilos"
+
+    Returns:
+        The converted amount and unit
     """
-    preferred_alias = PREFERRED_ALIASES.get(unit.lower(), unit.lower())
-    try:
-        multiplier, internal_unit = CONVERSIONS[preferred_alias]
-    except KeyError:
-        msg = f"Could not normalise {amount} {unit}!"
-        raise UnitError(msg)
-
+    unit = unit.lower()
+    unit = SINGULARS.get(unit, unit)
+    unit = PREFERRED_ALIASES.get(unit, unit)
+    multiplier, internal_unit = CONVERSIONS.get(unit, (1, unit))
     return amount * multiplier, internal_unit
 
 
@@ -23,7 +30,6 @@ def normalise(amount: int | float, unit: str) -> tuple[int | float, str]:
 GRAM = "g"
 ML = "ml"
 INTERNAL_UNITS = {GRAM, ML}
-
 
 # The preferred alias is the key, the alternatives are the value
 ALIASES = {
@@ -60,6 +66,9 @@ CONVERSIONS = {
     "fl oz": (30, ML),
 }
 
-
-class UnitError(Exception):
-    pass
+# singular to the left; plural to the right
+PLURALS = {
+    "clove": "cloves",  # of garlic
+    "sprig": "sprigs",
+}
+SINGULARS = {plural: singular for singular, plural in PLURALS.items()}
