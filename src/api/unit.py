@@ -29,7 +29,8 @@ def normalise(amount: Number, unit: str) -> tuple[Number, str]:
 # denomination so that we can use integers.
 GRAM = "g"
 ML = "ml"
-INTERNAL_UNITS = {GRAM, ML}
+TSP = "tsp"
+INTERNAL_UNITS = {GRAM, ML, TSP}
 
 # The preferred alias is the key, the alternatives are the value
 ALIASES = {
@@ -47,6 +48,8 @@ ALIASES = {
     "oz": ["ounce", "ounces"],
     "cup": ["cups"],
     "fl oz": ["fluid ounce", "fluid ounces"],
+    TSP: ["teaspoon", "teaspoons", "tsps"],
+    "tbsp": ["tbsps", "tablespoon", "tablespoons"],
 }
 PREFERRED_ALIASES = {
     alternative: preferred
@@ -58,12 +61,14 @@ PREFERRED_ALIASES = {
 CONVERSIONS = {
     GRAM: (1, GRAM),
     ML: (1, ML),
+    TSP: (1, TSP),
     "kg": (1000, GRAM),
     "l": (1000, ML),
     "oz": (28, GRAM),
     "lb": (454, GRAM),
     "cup": (240, ML),
     "fl oz": (30, ML),
+    "tbsp": (3, TSP),
 }
 
 # singular to the left; plural to the right
