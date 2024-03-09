@@ -19,6 +19,7 @@ commitizen
 mkdocs
 mkdocstrings[python]
 mike
+pre-commit
 
 # build
 build
