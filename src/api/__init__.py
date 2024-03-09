@@ -4,4 +4,4 @@ from .recipe import Recipe, RecipeSerializer
 from .settings import Settings
 
 __app_name__ = "yes-chef"
-__version__ = "0.6.1"
+__version__ = "0.7.0"

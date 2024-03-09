@@ -1,3 +1,15 @@
+## 0.7.0 (2024-03-09)
+
+### Feat
+
+- shopping lists now convert units where possible
+- added plural handling for units
+- added support for normalising and converting units
+
+### Fix
+
+- added support for tsp / tbsp
+
 ## 0.6.1 (2024-03-03)
 
 ### Fix
