@@ -7,5 +7,5 @@ def test_version(monkeypatch):
     monkeypatch.setattr("src.cli.api.__version__", "420.69")
     runner = CliRunner()
     result = runner.invoke(app, ["--version"])
-    assert result.output == f"yes-chef v420.69\n"
+    assert result.output == "yes-chef v420.69\n"
     monkeypatch.undo()

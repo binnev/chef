@@ -13,11 +13,13 @@ ruff
 pytest
 pytest-asyncio
 pytest-cov
+pytest-better-parametrize
 responses
 commitizen
 mkdocs
 mkdocstrings[python]
 mike
+pre-commit
 
 # build
 build
