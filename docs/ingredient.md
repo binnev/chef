@@ -1,2 +1,0 @@
-# Ingredient syntax
-coming soon

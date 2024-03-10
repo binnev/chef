@@ -1,5 +1,5 @@
 site_name: yes-chef
-theme: material
+theme: readthedocs
 
 plugins:
   - search
@@ -8,12 +8,17 @@ plugins:
 
 nav:
   - Home: index.md
-  - Commands: commands.md
-  - Ingredient syntax: ingredient.md
+  - Commands:
+      - commands/recipe_wizard.md
+      - commands/export.md
+
+  - Recipe format:
+      - recipe/yaml.md
+      - recipe/markdown.md
   - API reference:
-    - reference/unit.md
-    - reference/shopping_list.md
-    - reference/ingredient.md
+      - reference/unit.md
+      - reference/shopping_list.md
+      - reference/ingredient.md
 
 watch:
   - docs

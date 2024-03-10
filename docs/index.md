@@ -27,62 +27,12 @@ It is recommended to check your recipe folder into a public github repository; t
 
 ### Adding a new recipe
 
-Recipes are declared as YAML files. YAML is a simple human-readable data format that lends itself well to this task.
-The recipe wizard will guide you through creating a yaml recipe.
-For example, to create a simple porridge recipe:
+See the [`new recipe`](commands/recipe_wizard.md) command, or, if you want to write the YAML files yourself, you can read more about the YAML syntax [here](recipe/yaml.md).
 
-```shell
-$ chef new recipe
-name: porridge
-author: me
-Ingredients:
-format: [amount, [unit,]] name [; prep]
-enter an ingredient [leave blank to finish]: 25, g, oats
-enter an ingredient [leave blank to finish]: water
-enter an ingredient [leave blank to finish]: 
-Method:
-enter a method step [leave blank to finish]: gently cook the oats. 
-enter a method step [leave blank to finish]: 
-Equipment:
-what equipment do you need? [leave blank to finish]: pan 
-what equipment do you need? [leave blank to finish]: 
-prep_minutes (int) [0]: 
-cook_minutes (int) [0]: 5
-servings (int) [0]: 1
-source (url or book name): 
-image (url or local image): 
-notes: 
-Created recipe <recipe_library>/yaml/porridge.yaml
-```
-
-This will generate the following `porridge.yaml`:
-
-```yaml
-author: me
-name: porridge
-servings: 1
-cook_minutes: 5
-equipment:
-  - pan
-ingredients:
-  - 25, g, oats
-  - water
-method:
-  - gently cook the oats.
-```
-
-Once you understand the fields and syntax expected by the yaml format, you can also create the yaml files directly.
-To read more about the ingredient syntax, see [ingredient syntax](ingredient.md)
 
 ## Exporting your YAML recipes to Markdown
 
-To export your yaml recipes to a more readable markdown format, run
-
-```shell
-$ chef export
-```
-
-These markdown files can then be browsed on your phone in the kitchen.
+See the [`export`](commands/export.md) command. 
 
 ## Planning meals and making a shopping list
 
