@@ -8,9 +8,12 @@ plugins:
 
 nav:
   - Home: index.md
+  - How-to:
+      - how-to/walkthrough.md
+
   - Commands:
       - commands/init.md
-      - commands/recipe_wizard.md
+      - commands/new_recipe.md
       - commands/export.md
       - commands/new_plan.md
       - commands/plan_recipe.md
