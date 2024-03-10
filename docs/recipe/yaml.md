@@ -13,7 +13,7 @@ ingredients:
   - water
 ```
 
-and this is the same recipe, but with all the fields populated: 
+and this is the same recipe, but with all the optional fields populated: 
 
 ```yaml
 name: porridge
@@ -22,7 +22,7 @@ prep_minutes: 1
 cook_minutes: 5
 servings: 1
 source: www.porridge.com
-image: porridge.jpg
+image: porridge.jpg  # this file must exist in the /images folder
 notes: easy peasy
 equipment:
   - small saucepan
@@ -66,7 +66,7 @@ ingredients:
   - 2, kg, apples; chopped
 ```
 
-Writing this with correct YAML syntax produces overly cumbersome input files:
+Writing this with correct YAML syntax would produce very verbose input files:
 
 ```
 ingredients:
