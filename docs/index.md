@@ -9,7 +9,7 @@ command to your `~/.local/bin`. You may need to add this to your PATH variable t
 
 ## Quick start
 
-To get started, please see the [walkthrough](walkthrough.md). Or, if you want to dive straight in, you can always use
+To get started, please see the [walkthrough](how-to/walkthrough.md). Or, if you want to dive straight in, you can always use
 
 ```shell
 $ chef --help
