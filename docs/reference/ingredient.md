@@ -1,4 +1,2 @@
-# Ingredient 
-
 ::: src.api.ingredient
 
