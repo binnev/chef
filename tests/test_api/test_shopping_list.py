@@ -4,7 +4,7 @@ import pytest
 
 from src.api.ingredient import Ingredient
 from src.api.recipe import Recipe
-from src.api.shopping_list import merge_recipes, Amounts
+from src.api.shopping_list import merge_recipes, MergedIngredient
 
 
 def _recipe(
@@ -31,16 +31,16 @@ def _recipe(
             id="1 recipe; amountless",
             recipes=[_recipe(["poopoo", "peepee"])],
             expected={
-                "poopoo": Amounts(enough_for=["whatever"]),
-                "peepee": Amounts(enough_for=["whatever"]),
+                "poopoo": MergedIngredient(amountless=["whatever"]),
+                "peepee": MergedIngredient(amountless=["whatever"]),
             },
         ),
         testcase(
             id="1 recipe; mix of units/amounts and amountless",
             recipes=[_recipe(["1, kg, poopoo", "peepee"])],
             expected={
-                "poopoo": Amounts(units={"g": 1000}),
-                "peepee": Amounts(enough_for=["whatever"]),
+                "poopoo": MergedIngredient(units={"g": 1000}),
+                "peepee": MergedIngredient(amountless=["whatever"]),
             },
         ),
         testcase(
@@ -50,9 +50,9 @@ def _recipe(
                 _recipe(["69, kg, poopoo", "10, weewee"]),
             ],
             expected={
-                "poopoo": Amounts(units={"g": 70000}),
-                "peepee": Amounts(enough_for=["whatever"]),
-                "weewee": Amounts(unitless=10),
+                "poopoo": MergedIngredient(units={"g": 70000}),
+                "peepee": MergedIngredient(amountless=["whatever"]),
+                "weewee": MergedIngredient(unitless=10),
             },
         ),
         testcase(
@@ -62,8 +62,10 @@ def _recipe(
                 _recipe(["poopoo"], name="second one"),
             ],
             expected={
-                "poopoo": Amounts(enough_for=["whatever", "second one"]),
-                "peepee": Amounts(enough_for=["whatever"]),
+                "poopoo": MergedIngredient(
+                    amountless=["whatever", "second one"]
+                ),
+                "peepee": MergedIngredient(amountless=["whatever"]),
             },
         ),
         testcase(
@@ -73,8 +75,8 @@ def _recipe(
                 _recipe(["poopoo", "5, poopoo", "500, g, poopoo"], name="two"),
             ],
             expected={
-                "poopoo": Amounts(
-                    enough_for=["one", "two"],
+                "poopoo": MergedIngredient(
+                    amountless=["one", "two"],
                     unitless=7,
                     units={"g": 3500},
                 ),

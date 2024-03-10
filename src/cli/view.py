@@ -5,7 +5,7 @@ view.py
 import typer
 
 from .. import api
-from ..api.shopping_list import Amounts
+from ..api.shopping_list import MergedIngredient
 from .utils import echo
 
 app = typer.Typer()
@@ -49,11 +49,11 @@ def view_recipe():
 
 def _format_ingredient_for_list(
     ing_name: str,
-    amounts: Amounts,
+    amounts: MergedIngredient,
     width: int = 0,
 ) -> str:
     result = f"{ing_name}:".ljust(width)
-    unique_recipes = len(set(amounts.enough_for))
+    unique_recipes = len(set(amounts.amountless))
     match [unique_recipes, amounts.unitless, len(amounts.units)]:
         case [0, 0, 0]:
             raise ValueError("empty Amounts!")
@@ -62,9 +62,9 @@ def _format_ingredient_for_list(
         # only 1 unique recipe (could be repeated)
         case [1, 0, 0]:
             recipe_strings = (
-                amounts.enough_for[0]
-                if (count := len(amounts.enough_for)) == 1
-                else f"{amounts.enough_for[0]} (x{count})"
+                amounts.amountless[0]
+                if (count := len(amounts.amountless)) == 1
+                else f"{amounts.amountless[0]} (x{count})"
             )
             result += f" enough for {recipe_strings}"
 
@@ -79,8 +79,8 @@ def _format_ingredient_for_list(
 
         # ========================== multi line cases ==========================
         case _:
-            if amounts.enough_for:
-                result += f"\n\t{_format_amountless(amounts.enough_for)}"
+            if amounts.amountless:
+                result += f"\n\t{_format_amountless(amounts.amountless)}"
             if amounts.unitless:
                 result += f"\n\t{amounts.unitless}"
             for unit, amount in amounts.units.items():
