@@ -1,5 +1,5 @@
-site_name: My Docs
-theme: readthedocs
+site_name: yes-chef
+theme: material
 
 plugins:
   - search
@@ -10,3 +10,11 @@ nav:
   - Home: index.md
   - Commands: commands.md
   - Ingredient syntax: ingredient.md
+  - API reference:
+    - reference/unit.md
+    - reference/shopping_list.md
+    - reference/ingredient.md
+
+watch:
+  - docs
+  - src

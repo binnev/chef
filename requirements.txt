@@ -18,6 +18,7 @@ responses
 commitizen
 mkdocs
 mkdocstrings[python]
+mkdocs-material
 mike
 pre-commit
 

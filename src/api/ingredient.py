@@ -2,6 +2,16 @@ from pydantic import BaseModel
 
 
 class Ingredient(BaseModel):
+    """
+    Represents one ingredient in the ingredient list of a Recipe.
+
+    Attributes:
+        name: the name of the ingredient e.g. "apples"
+        amount: how much of the ingredient e.g. 2
+        unit: optional unit e.g. "kg"
+        prep: optional preparation instructions e.g. "chopped"
+    """
+
     name: str
     amount: int | float = 0
     unit: str = ""
@@ -10,7 +20,14 @@ class Ingredient(BaseModel):
     @classmethod
     def from_str(cls, s: str) -> "Ingredient":
         """
-        :raises: ParseIngredientError
+        Args:
+            s: the ingredient string (see `parse_ingredient_str`)
+
+        Returns:
+            the Ingredient instance
+
+        Raises:
+            ParseIngredientError: if the ingredient can't be parsed
         """
         return Ingredient(**parse_ingredient_str(s))
 
@@ -49,13 +66,20 @@ class Ingredient(BaseModel):
 
 def parse_ingredient_str(s: str) -> dict:
     """
-    :param s: examples:
-                name only:                    "apple"
-                amount and name:              "1, apple"
-                amount, unit and name:        "1, kg, apples"
-                amount, unit, name, and prep: "1, kg, apples; chopped"
-    :return:
-    :raises: IngredientParseError
+    Args:
+        s: the ingredient string (see examples)
+
+    Returns:
+        A dictionary of values describing an Ingredient
+
+    Raises:
+        ParseIngredientError: if the ingredient cannot be parsed
+
+    Examples:
+        - name only:                    "apple"
+        - amount and name:              "1, apple"
+        - amount, unit and name:        "1, kg, apples"
+        - amount, unit, name, and prep: "1, kg, apples; chopped"
     """
     output = {}
 

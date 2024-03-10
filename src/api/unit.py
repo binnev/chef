@@ -1,3 +1,7 @@
+"""
+Handles normalising and converting between units.
+"""
+
 Number = int | float
 
 
@@ -7,9 +11,9 @@ def normalise(amount: Number, unit: str) -> tuple[Number, str]:
     millilitres) if possible
 
     Handles:
-        alias (pounds -> lb)
-        system (imperial -> metric) (lb -> kg)
-        denomination (5kg -> 5000g)
+        - alias: (pounds -> lb)
+        - system (imperial -> metric): (lb -> kg)
+        - denomination: (5kg -> 5000g)
 
     Args:
         amount: the input amount e.g. 2.5
