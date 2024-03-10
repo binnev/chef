@@ -9,6 +9,7 @@ plugins:
 nav:
   - Home: index.md
   - Commands:
+      - commands/init.md
       - commands/recipe_wizard.md
       - commands/export.md
       - commands/new_plan.md
