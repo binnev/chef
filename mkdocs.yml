@@ -11,6 +11,10 @@ nav:
   - Commands:
       - commands/recipe_wizard.md
       - commands/export.md
+      - commands/new_plan.md
+      - commands/plan_recipe.md
+      - commands/view_plan.md
+      - commands/view_list.md
 
   - Recipe format:
       - recipe/yaml.md

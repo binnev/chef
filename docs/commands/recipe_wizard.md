@@ -1,4 +1,4 @@
-# Recipe wizard
+# new recipe
 
 ```shell
 chef new recipe
