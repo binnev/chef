@@ -1,0 +1,19 @@
+name: porridge
+author: me
+prep_minutes: 1
+cook_minutes: 5
+servings: 1
+source: www.porridge.com
+image: porridge.jpg
+notes: easy peasy
+equipment:
+  - small saucepan
+  - stove
+ingredients:
+  - 50, g, oats
+  - 100, ml, water
+  - brown sugar
+method:
+  - put the oats and water in the pan
+  - cook until the desired thickness is reached
+  - serve with some brown sugar to taste
