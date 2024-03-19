@@ -1,3 +1,4 @@
+from pathlib import Path
 from unittest.mock import MagicMock
 
 import pytest
@@ -27,6 +28,20 @@ def mock_settings_load(request, monkeypatch):
         return
 
     monkeypatch.setattr(Settings, "from_file", lambda: Settings())
+
+
+@pytest.fixture(autouse=True)
+def mock_mkdir(request, monkeypatch):
+    """
+    Don't allow creating dirs with `Path.mkdir()` in tests
+    """
+    if "allow_mkdir" in request.keywords:
+        return
+
+    mock = MagicMock()
+    monkeypatch.setattr(Path, "mkdir", mock)
+    yield mock
+    monkeypatch.undo()
 
 
 @pytest.fixture

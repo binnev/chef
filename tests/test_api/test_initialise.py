@@ -6,12 +6,11 @@ from src.api.constants import __app_name__
 
 
 @patch("src.api.initialise.open")
-@patch("src.api.initialise.Path.mkdir")
 @patch("src.api.initialise.Path.exists", return_value=False)
 def test_init_library__new(
     mock_exists: MagicMock,
-    mock_mkdir: MagicMock,
     mock_open: MagicMock,
+    mock_mkdir: MagicMock,
 ):
     path = Path("foo/bar")
     init_library(path)
@@ -27,12 +26,11 @@ def test_init_library__new(
 
 
 @patch("src.api.initialise.open")
-@patch("src.api.initialise.Path.mkdir")
 @patch("src.api.initialise.Path.exists", return_value=True)
 def test_init_library__existing(
     mock_exists: MagicMock,
-    mock_mkdir: MagicMock,
     mock_open: MagicMock,
+    mock_mkdir: MagicMock,
 ):
     path = Path("foo/bar")
     init_library(path)
