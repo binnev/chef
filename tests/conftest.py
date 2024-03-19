@@ -15,7 +15,9 @@ def mock_settings_save(request, monkeypatch):
     if "allow_settings_save" in request.keywords:
         return
 
-    monkeypatch.setattr(Settings, "save", MagicMock())
+    mock = MagicMock()
+    monkeypatch.setattr(Settings, "save", mock)
+    return mock
 
 
 @pytest.fixture(autouse=True)
@@ -27,21 +29,36 @@ def mock_settings_load(request, monkeypatch):
     if "allow_settings_load" in request.keywords:
         return
 
-    monkeypatch.setattr(Settings, "from_file", lambda: Settings())
+    mock = MagicMock()
+    mock.return_value = Settings()
+    monkeypatch.setattr(Settings, "from_file", mock)
+    return mock
 
 
 @pytest.fixture(autouse=True)
-def mock_mkdir(request, monkeypatch):
+def mock_path_mkdir(request, monkeypatch):
     """
     Don't allow creating dirs with `Path.mkdir()` in tests
     """
-    if "allow_mkdir" in request.keywords:
+    if "allow_path_mkdir" in request.keywords:
         return
 
     mock = MagicMock()
     monkeypatch.setattr(Path, "mkdir", mock)
-    yield mock
-    monkeypatch.undo()
+    return mock
+
+
+@pytest.fixture(autouse=True)
+def mock_path_touch(request, monkeypatch):
+    """
+    Don't allow creating files with `Path.touch()` in tests
+    """
+    if "allow_path_touch" in request.keywords:
+        return
+
+    mock = MagicMock()
+    monkeypatch.setattr(Path, "touch", mock)
+    return mock
 
 
 @pytest.fixture
