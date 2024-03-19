@@ -83,6 +83,7 @@ def get_or_create_json(path: Path) -> dict:
         with open(path) as file:
             json_str = file.read()
     except FileNotFoundError:
+        utils.touch(path)
         with open(path, "w") as file:
             file.write("{}")
         return {}
