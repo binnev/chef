@@ -49,6 +49,7 @@ include = ["src*"]
 testpaths = ["tests"]
 markers = [
     "allow_settings_save: by default, Settings.save is mocked, so we don't create real files when running tests.",
+    "allow_settings_load: ditto",
 ]
 
 [tool.coverage.run]
@@ -71,5 +72,5 @@ update_changelog_on_bump = true
 major_version_zero = true
 version_files = [
     "pyproject.toml:version",
-    "src/api/__init__.py:__version__",
+    "src/api/constants.py:__version__",
 ]
