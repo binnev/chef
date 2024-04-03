@@ -7,6 +7,7 @@ import typer
 
 from . import new, routines
 from . import view
+from .utils import requires_library_init
 from .. import api
 from ..api.settings import Settings
 
@@ -30,6 +31,7 @@ def init(
 
 
 @app.command()
+@requires_library_init
 def config(
     merge_ingredients: t.Annotated[
         t.Optional[bool],
@@ -59,6 +61,7 @@ def config(
 
 
 @app.command()
+@requires_library_init
 def plan(
     query: list[str] = typer.Argument(help="Search term to find recipes"),
 ):
@@ -70,6 +73,7 @@ def plan(
 
 
 @app.command()
+@requires_library_init
 def export():
     """
     Convert YAML recipes to markdown

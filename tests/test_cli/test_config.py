@@ -50,6 +50,7 @@ def test_config__list(
     cmd: str,
     expected: str,
     mock_settings_save,
+    recipe_library_initialised,
 ):
     runner = CliRunner()
     result = runner.invoke(app, cmd.split())

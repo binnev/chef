@@ -74,7 +74,7 @@ def test__format_ingredient_for_list(
 
 
 @patch("src.api.plan.Plan.shopping_list")
-def test_view_list__empty(mock_shopping_list):
+def test_view_list__empty(mock_shopping_list, recipe_library_initialised):
     """
     This tests a bug where the formatting (which used `max`) would break for
     an empty plan.

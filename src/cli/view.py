@@ -4,14 +4,15 @@ view.py
 
 import typer
 
+from .utils import echo, requires_library_init
 from .. import api
 from ..api.shopping_list import MergedIngredient
-from .utils import echo
 
 app = typer.Typer()
 
 
 @app.command(name="plan")
+@requires_library_init
 def view_plan():
     """
     view_plan
@@ -26,6 +27,7 @@ def view_plan():
 
 
 @app.command(name="list")
+@requires_library_init
 def view_list():
     """
     view_list
@@ -40,6 +42,7 @@ def view_list():
 
 
 @app.command(name="recipe")
+@requires_library_init
 def view_recipe():
     """
     view recipe

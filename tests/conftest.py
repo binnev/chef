@@ -35,6 +35,16 @@ def mock_settings_load(request, monkeypatch):
     return mock
 
 
+@pytest.fixture()
+def recipe_library_initialised(mock_settings_load):
+    """
+    Updates the mock loaded settings with a recipe_library value to simulate
+    an initialised recipe library.
+    """
+    settings = mock_settings_load()
+    settings.system.recipe_library = Path("some/path")
+
+
 @pytest.fixture(autouse=True)
 def mock_path_mkdir(request, monkeypatch):
     """
