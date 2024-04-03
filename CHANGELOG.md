@@ -1,3 +1,9 @@
+## 0.8.1 (2024-04-03)
+
+### Fix
+
+- settings bug in export command
+
 ## 0.8.0 (2024-04-03)
 
 ### BREAKING CHANGE
