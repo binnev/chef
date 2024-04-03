@@ -1,8 +1,11 @@
 import typing as t
+from functools import wraps
 from typing import TypeVar
 
 import inquirer
 import typer
+
+from src.api import Settings
 
 T = TypeVar("T")
 
@@ -41,3 +44,27 @@ def multiple_choice_menu(prompt: str, choices: dict[str, T]) -> T:
         ]
     )["_"]
     return choices[key]
+
+
+INIT_MSG = """
+You need to initialise your recipe library by running:
+
+    chef init <path-to-your-recipe-library>
+"""
+
+
+def requires_library_init(func):
+    """
+    Decorator that checks whether the recipe library has been initialised
+    before certain functions can be called.
+    """
+
+    @wraps(func)
+    def wrapped(*args, **kwargs):
+        settings = Settings.load()
+        if settings.system.recipe_library is None:
+            typer.secho(INIT_MSG)
+            raise typer.Exit(1)
+        return func(*args, **kwargs)
+
+    return wrapped

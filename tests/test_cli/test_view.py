@@ -1,6 +1,11 @@
-import pytest
+from unittest.mock import patch
 
+import pytest
+from typer.testing import CliRunner
+
+from src.api import Plan
 from src.api.shopping_list import MergedIngredient
+from src.cli import app
 from src.cli.view import _format_ingredient_for_list
 
 
@@ -67,3 +72,21 @@ def test__format_ingredient_for_list(
     expected: str,
 ):
     assert _format_ingredient_for_list(ing_name, amounts) == expected
+
+
+@patch("src.api.plan.Plan.shopping_list")
+@patch("src.cli.view.api.Plan.current")
+def test_view_list__empty(
+    mock_current,
+    mock_shopping_list,
+    recipe_library_initialised,
+):
+    """
+    This tests a bug where the formatting (which used `max`) would break for
+    an empty plan.
+    """
+    mock_current.return_value = Plan()
+    mock_shopping_list.return_value = []
+    runner = CliRunner()
+    result = runner.invoke(app, "view list".split())
+    assert result.exit_code == 0

@@ -1,4 +1,5 @@
 import asyncio
+import typing as t
 from pathlib import Path
 from typing import Optional
 
@@ -6,6 +7,7 @@ import typer
 
 from . import new, routines
 from . import view
+from .utils import requires_library_init
 from .. import api
 from ..api.settings import Settings
 
@@ -29,33 +31,37 @@ def init(
 
 
 @app.command()
+@requires_library_init
 def config(
-    recipe_library: str = typer.Option(
-        "",
-        "--recipe-library",
-        help="The folder in which the YAML recipes are stored",
-    ),
+    merge_ingredients: t.Annotated[
+        t.Optional[bool],
+        typer.Option(
+            ...,
+            "--merge-ingredients",
+            help=(
+                "Whether to merge similar ingredients when creating a "
+                "shopping list"
+            ),
+            is_flag=False,
+        ),
+    ] = None,
 ):
     """
     Update and/or view configuration
     """
-    settings = Settings.from_file()
-    if recipe_library:
-        print(f"{recipe_library=}")
-        if (recipe_library := Path(recipe_library)).exists():
-            absolute_path = recipe_library.absolute()
-            settings.recipe_library = absolute_path
-            print(f"Saving recipe library: {absolute_path}")
-            settings.save()
-        else:
-            typer.echo(f"{recipe_library} does not exist")
+    settings = Settings.load()
+    if merge_ingredients is not None:
+        settings.project.merge_ingredients = merge_ingredients
+
+    settings.save()
 
     print("config: ")
-    for key, val in settings.model_dump().items():
+    for key, val in settings.project.model_dump().items():
         print(f"\t{key}: {val}".expandtabs(4))
 
 
 @app.command()
+@requires_library_init
 def plan(
     query: list[str] = typer.Argument(help="Search term to find recipes"),
 ):
@@ -67,6 +73,7 @@ def plan(
 
 
 @app.command()
+@requires_library_init
 def export():
     """
     Convert YAML recipes to markdown

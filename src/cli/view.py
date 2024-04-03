@@ -4,14 +4,15 @@ view.py
 
 import typer
 
+from .utils import echo, requires_library_init
 from .. import api
 from ..api.shopping_list import MergedIngredient
-from .utils import echo
 
 app = typer.Typer()
 
 
 @app.command(name="plan")
+@requires_library_init
 def view_plan():
     """
     view_plan
@@ -26,6 +27,7 @@ def view_plan():
 
 
 @app.command(name="list")
+@requires_library_init
 def view_list():
     """
     view_list
@@ -33,13 +35,14 @@ def view_list():
     plan = api.Plan.current()
     ingredients = plan.shopping_list()
     echo("Current shopping list:")
-    width = max(map(len, ingredients))
+    width = max(map(len, ingredients), default=0)
     for ing_name in sorted(ingredients):
         amounts = ingredients[ing_name]
         echo(_format_ingredient_for_list(ing_name, amounts, width))
 
 
 @app.command(name="recipe")
+@requires_library_init
 def view_recipe():
     """
     view recipe
