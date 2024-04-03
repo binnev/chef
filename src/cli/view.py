@@ -33,7 +33,7 @@ def view_list():
     plan = api.Plan.current()
     ingredients = plan.shopping_list()
     echo("Current shopping list:")
-    width = max(map(len, ingredients))
+    width = max(map(len, ingredients), default=0)
     for ing_name in sorted(ingredients):
         amounts = ingredients[ing_name]
         echo(_format_ingredient_for_list(ing_name, amounts, width))
