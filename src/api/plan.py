@@ -41,7 +41,7 @@ class Plan(BaseModel):
     @classmethod
     def current(cls) -> "Plan":
         settings = Settings.load()
-        json_files = settings.plans_dir.glob("*.json")
+        json_files = settings.system.plans_dir.glob("*.json")
         latest = max(json_files)  # relying on string comparison here
         with open(latest) as file:
             try:
