@@ -1,7 +1,7 @@
 [project]
 name = "yes-chef"
 description = "A command-line tool for managing recipes and making shopping lists."
-version = "0.7.0"
+version = "0.8.0"
 readme = "README.md"
 requires-python = ">=3.10"
 authors = [

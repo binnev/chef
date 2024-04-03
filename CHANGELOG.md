@@ -1,3 +1,26 @@
+## 0.8.0 (2024-04-03)
+
+### BREAKING CHANGE
+
+- changes the values that can be set with `chef config`
+- changed the default recipe library location
+
+### Feat
+
+- **cli**: added decorator to check recipe library is initialised.
+- **settings**: renamed Settings.from_file() -> Settings.load()
+- **settings**: split settings into system-wide and project-specific settings
+- **settings**: added support for user settings
+
+### Fix
+
+- fixed settings bug when loading all recipes
+- fixed a bug where an empty plan would not display properly
+- **plan**: Plan.current was broken if no plans existed.
+- **config**: config command now correctly handles passed values
+- broken Plan.current
+- settings loading doesn't break if the file doesn't exist
+
 ## 0.7.0 (2024-03-09)
 
 ### Feat
