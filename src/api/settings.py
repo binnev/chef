@@ -8,8 +8,8 @@ from . import utils
 from .constants import __app_name__
 
 GLOBAL_CONFIG = Path.home() / f".{__app_name__}"
+PLANS_DIR = GLOBAL_CONFIG / "plans"
 GLOBAL_SETTINGS_FILE = GLOBAL_CONFIG / "settings.json"
-DEFAULT_RECIPE_LIBRARY = Path.home() / "recipes"
 
 
 class SystemSettings(BaseSettings):
@@ -40,10 +40,6 @@ class SystemSettings(BaseSettings):
     @property
     def project_settings(self):
         return self.user_config_dir / "settings.json"
-
-    @property
-    def plans_dir(self) -> Path:
-        return self.user_config_dir / "plans"
 
 
 class ProjectSettings(BaseSettings):

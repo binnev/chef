@@ -61,6 +61,20 @@ def mock_path_touch(request, monkeypatch):
     return mock
 
 
+@pytest.fixture(autouse=True)
+def mock_path_glob(request, monkeypatch):
+    """
+    Don't allow tests to change behaviour based on the results of `Path.glob()`
+    """
+    if "allow_path_glob" in request.keywords:
+        return
+
+    mock = MagicMock()
+    mock.return_value = (_ for _ in [])  # Path.glob returns a generator
+    monkeypatch.setattr(Path, "glob", mock)
+    return mock
+
+
 @pytest.fixture
 def mock_open_file_ctx():
     class MockOpenFileContext:
