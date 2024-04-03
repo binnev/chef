@@ -29,7 +29,7 @@ def new_recipe():
     """
     recipe = recipe_wizard()
     yaml_str = RecipeSerializer().serialize(recipe, Format.YAML)
-    settings = Settings.from_file()
+    settings = Settings.load()
     filename = clean_filename(
         settings.system.recipe_library / "yaml" / f"{recipe.name}.yaml"
     )

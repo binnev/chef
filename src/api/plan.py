@@ -40,7 +40,7 @@ class Plan(BaseModel):
 
     @classmethod
     def current(cls) -> "Plan":
-        settings = Settings.from_file()
+        settings = Settings.load()
         json_files = settings.plans_dir.glob("*.json")
         latest = max(json_files)  # relying on string comparison here
         with open(latest) as file:
@@ -55,5 +55,5 @@ class Plan(BaseModel):
 
     @property
     def filename(self):
-        settings = Settings.from_file()
+        settings = Settings.load()
         return settings.plans_dir / f"{self.created.isoformat()}.json"

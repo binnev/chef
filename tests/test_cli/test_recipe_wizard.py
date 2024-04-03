@@ -83,7 +83,7 @@ def test_recipe_wizard__minimal(mock_input):
 def test_new_recipe(mock_open, mock_recipe_wizard, mock_open_file_ctx):
     # this updates the settings returned by the mock_settings_load fixture,
     # so it has to be done before we invoke the runner.
-    settings = Settings.from_file()
+    settings = Settings.load()
     settings.system.recipe_library = Path("foo/bar")
 
     mock_open.return_value = mock_open_file_ctx

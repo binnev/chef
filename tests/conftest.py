@@ -31,7 +31,7 @@ def mock_settings_load(request, monkeypatch):
 
     mock = MagicMock()
     mock.return_value = Settings()
-    monkeypatch.setattr(Settings, "from_file", mock)
+    monkeypatch.setattr(Settings, "load", mock)
     return mock
 
 

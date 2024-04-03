@@ -46,7 +46,7 @@ def config(
     """
     Update and/or view configuration
     """
-    settings = Settings.from_file()
+    settings = Settings.load()
     if merge_ingredients is not None:
         settings.merge_ingredients = merge_ingredients
 

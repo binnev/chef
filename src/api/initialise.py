@@ -5,7 +5,7 @@ from .constants import __app_name__
 
 
 def init_library(path: Path):
-    settings = Settings.from_file()
+    settings = Settings.load()
     settings.system.recipe_library = path
     settings.save()
 

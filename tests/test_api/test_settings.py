@@ -80,7 +80,7 @@ def test_load__uninitialised(mock_json):
     initialised.
     """
     mock_json.return_value = {}  # system settings without recipe library path
-    settings = Settings.from_file()
+    settings = Settings.load()
     assert settings.system.recipe_library is None
     assert settings.project.merge_ingredients is True
     mock_json.assert_called_once_with(GLOBAL_SETTINGS_FILE)
@@ -142,7 +142,7 @@ def test_load__initialised(
         global_settings,
         user_settings,
     ]
-    settings = Settings.from_file()
+    settings = Settings.load()
     assert settings.model_dump() == expected_settings
 
     assert mock_json.call_args_list[0].args[0] == GLOBAL_SETTINGS_FILE

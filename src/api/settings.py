@@ -85,7 +85,7 @@ class Settings(BaseSettings):
             file.write(self.project.model_dump_json())
 
     @classmethod
-    def from_file(cls) -> "Settings":
+    def load(cls) -> "Settings":
         """
         Load the system settings and the project settings. Should always
         succeed, even if the recipe library is not initialised. Otherwise the
