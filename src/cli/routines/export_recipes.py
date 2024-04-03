@@ -13,7 +13,7 @@ from ...api.utils import clean_filename
 
 async def export_recipes():
     settings = Settings.load()
-    markdown_folder = settings.recipe_library / "md"  # todo: dedupe this
+    markdown_folder = settings.system.recipe_library / "md"  # todo: dedupe this
     recipes = await Recipe.load_all()
     print(f"loaded {len(recipes)} recipes")
     await asyncio.gather(
@@ -29,7 +29,8 @@ async def export_recipes():
 
 async def create_readme(recipes: dict[Path, Recipe]):
     """
-    :param recipes: dict of markdown filenames : recipe objects
+    Args:
+        recipes: dict of markdown filenames : recipe objects
     """
     settings = Settings.load()
 
@@ -53,7 +54,7 @@ async def create_readme(recipes: dict[Path, Recipe]):
     readme_str = "\n\n".join(readme)
 
     async with aiofiles.open(
-        settings.recipe_library / "README.md", "w"
+        settings.system.recipe_library / "README.md", "w"
     ) as file:
         await file.write(readme_str)
 
