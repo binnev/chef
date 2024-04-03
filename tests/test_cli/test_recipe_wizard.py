@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from typer.testing import CliRunner
 from unittest.mock import patch
 
@@ -79,6 +81,11 @@ def test_recipe_wizard__minimal(mock_input):
 @patch("src.cli.new.recipe_wizard")
 @patch("src.cli.new.open")
 def test_new_recipe(mock_open, mock_recipe_wizard, mock_open_file_ctx):
+    # this updates the settings returned by the mock_settings_load fixture,
+    # so it has to be done before we invoke the runner.
+    settings = Settings.from_file()
+    settings.system.recipe_library = Path("foo/bar")
+
     mock_open.return_value = mock_open_file_ctx
 
     mock_recipe_wizard.return_value = Recipe(
@@ -88,10 +95,10 @@ def test_new_recipe(mock_open, mock_recipe_wizard, mock_open_file_ctx):
     )
     runner = CliRunner()
     result = runner.invoke(app, ["new", "recipe"])
+    assert result.exit_code == 0
 
-    settings = Settings.from_file()
     mock_open.assert_called_with(
-        settings.recipe_library / "yaml" / "silly-pie.yaml", "w"
+        settings.system.recipe_library / "yaml" / "silly-pie.yaml", "w"
     )
     mock_open_file_ctx.mock_file.write.assert_called()
     assert result.exit_code == 0

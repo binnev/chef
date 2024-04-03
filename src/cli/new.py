@@ -31,7 +31,7 @@ def new_recipe():
     yaml_str = RecipeSerializer().serialize(recipe, Format.YAML)
     settings = Settings.from_file()
     filename = clean_filename(
-        settings.recipe_library / "yaml" / f"{recipe.name}.yaml"
+        settings.system.recipe_library / "yaml" / f"{recipe.name}.yaml"
     )
     with open(filename, "w") as file:
         file.write(yaml_str)

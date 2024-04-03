@@ -9,7 +9,7 @@ from src.api.settings import (
     Settings,
     GLOBAL_SETTINGS_FILE,
     get_or_create_json,
-    DEFAULT_RECIPE_LIBRARY,
+    NotInitialised,
 )
 
 DEFAULTS = Settings().model_dump()
@@ -18,18 +18,72 @@ DEFAULTS = Settings().model_dump()
 @pytest.mark.allow_settings_save
 @patch("src.api.settings.utils.touch")
 @patch("src.api.settings.open")
-def test_save(mock_open, mock_touch, mock_open_file_ctx):
+def test_save__uninitialised(mock_open, mock_touch, mock_open_file_ctx):
+    """
+    If the recipe library is not initialised, the settings object doesn't
+    know where to save user settings. This should raise an error so we can
+    tell the user about it.
+    """
     mock_open.return_value = mock_open_file_ctx
 
     settings = Settings()
+
+    with pytest.raises(NotInitialised):
+        settings.save()
+
+    mock_touch.assert_called_with(GLOBAL_SETTINGS_FILE)
+    mock_open.assert_called_once_with(GLOBAL_SETTINGS_FILE, "w")
+    mock_open_file_ctx.mock_file.write.assert_called_once_with(
+        '{"recipe_library":null}'
+    )
+
+
+@pytest.mark.allow_settings_save
+@patch("src.api.settings.utils.touch")
+@patch("src.api.settings.open")
+def test_save__initialised(mock_open, mock_touch, mock_open_file_ctx):
+    mock_open.return_value = mock_open_file_ctx
+
+    settings = Settings()
+    settings.system.recipe_library = Path("foo/bar")
     settings.save()
 
     mock_touch.assert_called_with(GLOBAL_SETTINGS_FILE)
-    mock_open.assert_called_with(GLOBAL_SETTINGS_FILE, "w")
-    mock_open_file_ctx.mock_file.write.assert_called_once()
-    assert mock_open_file_ctx.mock_file.write.call_args.args[0].startswith(
-        '{"recipe_library'
+
+    # two files should have been opened -- the system and project settings
+    # files.
+    assert mock_open.call_count == 2
+    assert mock_open.call_args_list[0].args == (
+        GLOBAL_SETTINGS_FILE,
+        "w",
     )
+    assert mock_open.call_args_list[1].args == (
+        Path("foo/bar/.yes-chef/settings.json"),
+        "w",
+    )
+
+    # two files should have been written to
+    assert mock_open_file_ctx.mock_file.write.call_count == 2
+    assert mock_open_file_ctx.mock_file.write.call_args_list[0].args == (
+        '{"recipe_library":"foo/bar"}',
+    )
+    assert mock_open_file_ctx.mock_file.write.call_args_list[1].args == (
+        '{"merge_ingredients":true}',
+    )
+
+
+@pytest.mark.allow_settings_load
+@patch("src.api.settings.get_or_create_json")
+def test_load__uninitialised(mock_json):
+    """
+    Settings load should always succeed, even when the recipe library is not
+    initialised.
+    """
+    mock_json.return_value = {}  # system settings without recipe library path
+    settings = Settings.from_file()
+    assert settings.system.recipe_library is None
+    assert settings.project.merge_ingredients is True
+    mock_json.assert_called_once_with(GLOBAL_SETTINGS_FILE)
 
 
 @pytest.mark.allow_settings_load
@@ -46,33 +100,39 @@ def test_save(mock_open, mock_touch, mock_open_file_ctx):
             expected_settings=DEFAULTS,
         ),
         testcase(
-            id="only global settings",
+            id="only system settings",
             global_settings={"recipe_library": "some/path"},
             user_settings={},
-            expected_settings=DEFAULTS | {"recipe_library": Path("some/path")},
+            expected_settings=DEFAULTS
+            | {"system": {"recipe_library": Path("some/path")}},
         ),
         testcase(
-            id="only user settings",
+            id="only user settings (not loaded because no library initialised)",
             global_settings={},
-            user_settings={"recipe_library": "some/path"},
-            expected_settings=DEFAULTS | {"recipe_library": Path("some/path")},
+            user_settings={"merge_ingredients": False},
+            expected_settings=DEFAULTS,
         ),
         testcase(
-            id="user settings override globals",
-            global_settings={"recipe_library": "old/path"},
-            user_settings={"recipe_library": "some/path"},
-            expected_settings=DEFAULTS | {"recipe_library": Path("some/path")},
+            id="both user and system settings",
+            global_settings={"recipe_library": "some/path"},
+            user_settings={"merge_ingredients": False},
+            expected_settings=DEFAULTS
+            | {
+                "system": {"recipe_library": Path("some/path")},
+                "project": {"merge_ingredients": False},
+            },
         ),
         testcase(
             id="bogus user settings should be ignored",
-            global_settings={},
+            global_settings={"recipe_library": "some/path"},
             user_settings={"foo": "bar"},
-            expected_settings=DEFAULTS,
+            expected_settings=DEFAULTS
+            | {"system": {"recipe_library": Path("some/path")}},
         ),
     ],
 )
 @patch("src.api.settings.get_or_create_json")
-def test_load(
+def test_load__initialised(
     mock_json,
     global_settings: dict,
     user_settings: dict,
@@ -86,10 +146,10 @@ def test_load(
     assert settings.model_dump() == expected_settings
 
     assert mock_json.call_args_list[0].args[0] == GLOBAL_SETTINGS_FILE
-    assert (
-        mock_json.call_args_list[1].args[0]
-        == DEFAULT_RECIPE_LIBRARY / ".yes-chef/settings.json"
-    )
+    if "recipe_library" in global_settings:
+        path = Path(global_settings["recipe_library"])
+        expected = path / ".yes-chef/settings.json"
+        assert mock_json.call_args_list[1].args[0] == expected
 
 
 @pytest.mark.better_parametrize(

@@ -32,7 +32,7 @@ def test_init_library__updates_settings(mock_settings_load: MagicMock):
     path = Path("foo/bar")
     init_library(path)
 
-    assert mock_settings.recipe_library == path
+    assert mock_settings.system.recipe_library == path
 
 
 @patch("src.api.initialise.open")

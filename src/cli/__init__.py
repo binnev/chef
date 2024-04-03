@@ -1,4 +1,5 @@
 import asyncio
+import typing as t
 from pathlib import Path
 from typing import Optional
 
@@ -30,28 +31,29 @@ def init(
 
 @app.command()
 def config(
-    recipe_library: str = typer.Option(
-        "",
-        "--recipe-library",
-        help="The folder in which the YAML recipes are stored",
-    ),
+    merge_ingredients: t.Annotated[
+        t.Optional[bool],
+        typer.Option(
+            ...,
+            "--merge-ingredients",
+            help=(
+                "Whether to merge similar ingredients when creating a "
+                "shopping list"
+            ),
+        ),
+    ] = None,
 ):
     """
     Update and/or view configuration
     """
     settings = Settings.from_file()
-    if recipe_library:
-        print(f"{recipe_library=}")
-        if (recipe_library := Path(recipe_library)).exists():
-            absolute_path = recipe_library.absolute()
-            settings.recipe_library = absolute_path
-            print(f"Saving recipe library: {absolute_path}")
-            settings.save()
-        else:
-            typer.echo(f"{recipe_library} does not exist")
+    if merge_ingredients is not None:
+        settings.merge_ingredients = merge_ingredients
+
+    settings.save()
 
     print("config: ")
-    for key, val in settings.model_dump().items():
+    for key, val in settings.project.model_dump().items():
         print(f"\t{key}: {val}".expandtabs(4))
 
 
