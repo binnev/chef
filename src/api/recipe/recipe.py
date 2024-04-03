@@ -67,7 +67,9 @@ class Recipe(BaseModel):
         """
         settings = Settings.load()
         # todo: de-dupe these paths
-        filenames = settings.recipe_library.joinpath("yaml").glob("*.yaml")
+        filenames = settings.system.recipe_library.joinpath("yaml").glob(
+            "*.yaml"
+        )
         return list(await asyncio.gather(*(cls.load(f) for f in filenames)))
 
     @classmethod
