@@ -40,6 +40,7 @@ def config(
                 "Whether to merge similar ingredients when creating a "
                 "shopping list"
             ),
+            is_flag=False,
         ),
     ] = None,
 ):
@@ -48,7 +49,7 @@ def config(
     """
     settings = Settings.load()
     if merge_ingredients is not None:
-        settings.merge_ingredients = merge_ingredients
+        settings.project.merge_ingredients = merge_ingredients
 
     settings.save()
 
