@@ -1,3 +1,9 @@
+## 0.9.4 (2024-04-27)
+
+### Fix
+
+- add pyyaml to pyproject.toml requirements...
+
 ## 0.9.3 (2024-04-27)
 
 ### Fix
