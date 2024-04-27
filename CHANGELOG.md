@@ -1,3 +1,9 @@
+## 0.9.6 (2024-04-27)
+
+### Fix
+
+- improved how `view list` handles long ingredient names
+
 ## 0.9.5 (2024-04-27)
 
 ### Fix
