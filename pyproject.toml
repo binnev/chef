@@ -41,6 +41,9 @@ dev = [
 [project.urls]
 Repository = "https://github.com/binnev/yes-chef"
 
+[project.scripts]
+chef = "src.cli:app"
+
 [tool.setuptools.packages.find]
 include = ["src*"]
 
