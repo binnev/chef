@@ -42,7 +42,7 @@ dev = [
 Repository = "https://github.com/binnev/yes-chef"
 
 [project.scripts]
-chef = "entrypoint"
+chef = "src.cli:app"
 
 [tool.setuptools.packages.find]
 include = ["src*"]
