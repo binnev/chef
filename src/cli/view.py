@@ -21,9 +21,15 @@ def view_plan():
     echo("Current plan:")
     echo(f"\tcreated: {plan.created.isoformat()}")
     if plan.recipes:
-        echo("\trecipes:")
+        recipes_multipliers = {}
         for recipe in plan.recipes:
-            echo(f"\t\t{recipe}")
+            recipes_multipliers[recipe] = recipes_multipliers.get(recipe, 0) + 1
+        echo("\trecipes:")
+        for recipe, multiplier in recipes_multipliers.items():
+            s = f"\t\t{recipe}"
+            if multiplier > 1:
+                s += f" (x{multiplier})"
+            echo(s)
 
 
 @app.command(name="list")

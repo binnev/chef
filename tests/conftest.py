@@ -3,6 +3,8 @@ from unittest.mock import MagicMock
 
 import pytest
 
+from src.api import Recipe
+from src.api.ingredient import Ingredient
 from src.api.settings import Settings
 
 
@@ -103,3 +105,12 @@ def mock_open_file_ctx():
     mock_ctx = MockOpenFileContext()
 
     yield mock_ctx
+
+
+@pytest.fixture
+def minimal_recipe():
+    return Recipe(
+        name="foo",
+        author="bar",
+        ingredients=[Ingredient(name="poopoo")],
+    )

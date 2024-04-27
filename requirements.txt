@@ -15,6 +15,7 @@ pytest
 pytest-asyncio
 pytest-cov
 pytest-better-parametrize
+freezegun
 responses
 commitizen
 mkdocs

@@ -82,3 +82,9 @@ class Recipe(BaseModel):
             recipe_dict = yaml.safe_load(recipe_str)
             recipe_dict = preprocess_yaml(recipe_dict)
             return Recipe(**recipe_dict)
+
+    def __hash__(self) -> int:
+        """
+        This allows us to use Recipe as a dict key.
+        """
+        return (self.author, self.name).__hash__()

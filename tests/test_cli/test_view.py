@@ -1,9 +1,11 @@
+from copy import deepcopy
 from unittest.mock import patch
 
 import pytest
+from freezegun import freeze_time
 from typer.testing import CliRunner
 
-from src.api import Plan
+from src.api import Plan, Recipe
 from src.api.shopping_list import MergedIngredient
 from src.cli import app
 from src.cli.view import _format_ingredient_for_list
@@ -90,3 +92,48 @@ def test_view_list__empty(
     runner = CliRunner()
     result = runner.invoke(app, "view list".split())
     assert result.exit_code == 0
+
+
+@freeze_time("2024-04-27T12:00:00.00000Z")
+@patch("src.cli.view.api.Plan.current")
+def test_view_plan__empty(mock_current, recipe_library_initialised):
+    mock_current.return_value = Plan()
+    runner = CliRunner()
+    result = runner.invoke(app, "view plan".split())
+    assert result.exit_code == 0
+    assert (
+        result.stdout
+        == """Current plan:
+    created: 2024-04-27T12:00:00
+"""
+    )
+
+
+@freeze_time("2024-04-27T12:00:00.00000Z")
+@patch("src.cli.view.api.Plan.current")
+def test_view_plan__non_empty(
+    mock_current,
+    recipe_library_initialised,
+    minimal_recipe: Recipe,
+):
+    plan = Plan()
+    mock_current.return_value = plan
+    for _ in range(2):
+        plan.add(minimal_recipe)
+
+    other_recipe = deepcopy(minimal_recipe)
+    other_recipe.name = "baz"
+    plan.add(other_recipe)
+
+    runner = CliRunner()
+    result = runner.invoke(app, "view plan".split())
+    assert result.exit_code == 0
+    assert (
+        result.stdout
+        == """Current plan:
+    created: 2024-04-27T12:00:00
+    recipes:
+        foo by bar (x2)
+        baz by bar
+"""
+    )

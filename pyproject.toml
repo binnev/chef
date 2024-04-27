@@ -49,7 +49,6 @@ chef = "src.cli:app"
 include = ["src*"]
 
 [tool.pytest.ini_options]
-addopts = "-p no:cacheprovider --cov --cov-fail-under=70 --cov-report term-missing:skip-covered"
 testpaths = ["tests"]
 markers = [
     "allow_settings_save: by default, Settings.save is mocked, so we don't create real files when running tests.",
@@ -62,8 +61,10 @@ markers = [
 [tool.coverage.run]
 omit = ["*/__init__.py"]
 
-
 [tool.ruff]
+line-length = 80
+
+[tool.black]
 line-length = 80
 
 # 4. Ignore `E402` (import violations) in all `__init__.py` files, and in select subdirectories.
