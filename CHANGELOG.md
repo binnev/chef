@@ -1,3 +1,9 @@
+## 0.8.2 (2024-04-27)
+
+### Fix
+
+- recipe wizard now strips trailing whitespace from input
+
 ## 0.8.1 (2024-04-03)
 
 ### Fix
