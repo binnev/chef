@@ -1,3 +1,9 @@
+## 0.9.1 (2024-04-27)
+
+### Fix
+
+- included pyyaml in requirements
+
 ## 0.9.0 (2024-04-27)
 
 ### Feat
