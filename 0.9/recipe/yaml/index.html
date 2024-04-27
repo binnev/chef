@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>YAML recipe format - yes-chef</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../../css/version-select.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "YAML recipe format";
+        var mkdocs_page_input_path = "recipe/yaml.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> yes-chef
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">How-to</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../how-to/walkthrough/">Walkthrough</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Commands</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../commands/init/">init</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../commands/new_recipe/">new recipe</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../commands/export/">export</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../commands/new_plan/">new plan</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../commands/plan_recipe/">plan recipe</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../commands/view_plan/">view plan</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../commands/view_list/">view list</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Recipe format</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">YAML recipe format</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#recipe-syntax">Recipe syntax</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#ingredient-syntax">Ingredient syntax</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../markdown/">Exporting to Markdown</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API reference</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../reference/unit/">Unit</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../reference/shopping_list/">Shopping list</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../reference/ingredient/">Ingredient</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">yes-chef</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Recipe format</li>
+      <li class="breadcrumb-item active">YAML recipe format</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="yaml-recipe-format">YAML recipe format</h1>
+<p>Recipes are stored as YAML files. YAML is a machine readable data format that is also very human readable, with minimal syntax. This makes it an excellent way to declare non-technical things like recipes, while still allowing them to be machine-readable.</p>
+<h2 id="recipe-syntax">Recipe syntax</h2>
+<p>The only required fields in a recipe are <code>name</code> and <code>ingredients</code>. This is a minimal example recipe: </p>
+<pre><code class="language-yaml">name: porridge
+ingredients:
+  - 50, g, oats
+  - water
+</code></pre>
+<p>and this is the same recipe, but with all the optional fields populated: </p>
+<pre><code class="language-yaml">name: porridge
+author: me
+prep_minutes: 1
+cook_minutes: 5
+servings: 1
+source: www.porridge.com
+image: porridge.jpg  # this file must exist in the /images folder
+notes: easy peasy
+equipment:
+  - small saucepan
+  - stove
+ingredients:
+  - 50, g, oats
+  - 100, ml, water
+  - brown sugar
+method:
+  - put the oats and water in the pan
+  - cook until the desired thickness is reached
+  - serve with some brown sugar to taste
+</code></pre>
+<h2 id="ingredient-syntax">Ingredient syntax</h2>
+<p><code>Ingredient</code> has 4 fields:</p>
+<ul>
+<li>name (required)</li>
+<li>amount (optional)</li>
+<li>unit (optional)</li>
+<li>prep (optional)</li>
+</ul>
+<p>To preserve the natural-language feel of the input files, We use a custom syntax to declare ingredients. Commas separate the amount, units, and name of the ingredient.</p>
+<p>The following examples are valid:</p>
+<pre><code class="language-yaml">ingredients:
+  - apples         # amountless
+  - 2, apples      # unitless
+  - 2, kg, apples  # with units 
+</code></pre>
+<p>and all variants can have the optional prep instructions separated by a semicolon:</p>
+<pre><code class="language-yaml">ingredients:
+  - apples; chopped
+  - 2, apples; chopped
+  - 2, kg, apples; chopped
+</code></pre>
+<p>Writing this with correct YAML syntax would produce very verbose input files:</p>
+<pre><code>ingredients:
+  - apples:       # amountless
+    amount: None
+    units: None    
+  - apples:       # unitless
+    amount: 2
+    units: None
+  - apples:       # with units 
+    amount: 2
+    units: kg
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../../commands/view_list/" class="btn btn-neutral float-left" title="view list"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../markdown/" class="btn btn-neutral float-right" title="Exporting to Markdown">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../../commands/view_list/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../markdown/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+      <script src="../../js/version-select.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

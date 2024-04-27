@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Walkthrough - yes-chef</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../../css/version-select.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Walkthrough";
+        var mkdocs_page_input_path = "how-to/walkthrough.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> yes-chef
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">How-to</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Walkthrough</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#creating-a-new-recipe-library">Creating a new recipe library</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#adding-a-new-recipe">Adding a new recipe</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#exporting-your-yaml-recipes-to-markdown">Exporting your YAML recipes to Markdown</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#planning-meals-and-making-a-shopping-list">Planning meals and making a shopping list</a>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Commands</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../commands/init/">init</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../commands/new_recipe/">new recipe</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../commands/export/">export</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../commands/new_plan/">new plan</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../commands/plan_recipe/">plan recipe</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../commands/view_plan/">view plan</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../commands/view_list/">view list</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Recipe format</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../recipe/yaml/">YAML recipe format</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../recipe/markdown/">Exporting to Markdown</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API reference</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../reference/unit/">Unit</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../reference/shopping_list/">Shopping list</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../reference/ingredient/">Ingredient</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">yes-chef</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">How-to</li>
+      <li class="breadcrumb-item active">Walkthrough</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="walkthrough">Walkthrough</h1>
+<p>In this section we'll walk through the minimum commands required to use <code>yes-chef</code>. For more detailed information on the available commands, see the commands section, or run</p>
+<pre><code class="language-shell">$ chef --help
+</code></pre>
+<h2 id="creating-a-new-recipe-library">Creating a new recipe library</h2>
+<p><code>yes-chef</code> needs a place to store recipe files. You can think of this as a git repository for your recipes. Create a new recipe library in the current directory by running:</p>
+<pre><code class="language-shell">$ chef init .
+</code></pre>
+<p>It is recommended to check your recipe folder into a public github repository; this way you can browse and view your recipes on your phone in the kitchen. For example, see <a href="https://github.com/binnev/recipes">my recipe library</a>.</p>
+<h2 id="adding-a-new-recipe">Adding a new recipe</h2>
+<p>Use the <a href="../../commands/new_recipe/">recipe wizard</a>, or, if you want to write the YAML files yourself, you can read more about the YAML syntax <a href="recipe/yaml.md">here</a>.</p>
+<h2 id="exporting-your-yaml-recipes-to-markdown">Exporting your YAML recipes to Markdown</h2>
+<p>See the <a href="../../commands/export/"><code>export</code></a> command.</p>
+<h2 id="planning-meals-and-making-a-shopping-list">Planning meals and making a shopping list</h2>
+<p>One of the main features of <code>yes-chef</code> is its ability to create a shopping list for multiple recipes. Let's <a href="../../commands/new_plan/">create a new plan</a> with</p>
+<pre><code class="language-shell">$ chef new plan 
+created new plan
+</code></pre>
+<p>A plan is just a collection of recipes for which we want to generate a shopping list.
+Let's <a href="../../commands/plan_recipe/">add our porridge recipe</a>:</p>
+<pre><code class="language-shell">$ chef plan porridge
+Added porridge by me to plan.
+</code></pre>
+<p><code>yes-chef</code> searches your recipe library for "porridge", finds the porridge recipe, and adds it to the plan.
+Now let's <a href="../../commands/view_plan/">view the plan</a>:</p>
+<pre><code class="language-shell">$ chef view plan 
+Current plan:
+    created: 2024-03-03T09:22:55.979689
+    recipes:
+        porridge by me
+</code></pre>
+<p>And we can <a href="../../commands/view_list/">view the shopping list</a> by running</p>
+<pre><code class="language-shell">$ chef view list
+Current shopping list:
+oats: 50 g
+water: enough for porridge
+</code></pre>
+<p>So far, so good. Now let's say we want to plan 2 days worth of porridge -- we can add porridge a second time:</p>
+<pre><code class="language-shell">$ chef plan porridge
+Added porridge by me to plan.
+</code></pre>
+<p>Now our shopping list looks like this:</p>
+<pre><code class="language-shell">$ chef view list
+Current shopping list:
+oats: 100 g
+water: enough for porridge (x2)
+</code></pre>
+<p>The amount of oats has doubled, and the entry for "water" has updated too, even though our porridge recipe doesn't specify an amount for water.
+This is a trivial example, but it really gets useful when we plan several large recipes. <code>yes-chef</code> will intelligently merge the ingredients lists.</p>
+<p>If several recipes call for "fresh coriander" (no amount specified), this will be displayed like this, so that you know how much "fresh coriander" you need to buy:</p>
+<pre><code>fresh coriander:                  
+    enough for:
+        Chicken madras
+        Dhaal
+</code></pre>
+<p><code>yes-chef</code> will try to sum amounts when it makes sense to do so. (Like in the porridge example above, it knows that <code>25g + 25g = 50g</code>). When the units are incompatible, it will display the amounts organised by ingredient, so that you can quickly do the math yourself:</p>
+<pre><code>garlic:                           
+    3 cloves
+    4 tsp
+    1.0 bulb
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../.." class="btn btn-neutral float-left" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../commands/init/" class="btn btn-neutral float-right" title="init">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../.." style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../../commands/init/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+      <script src="../../js/version-select.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
