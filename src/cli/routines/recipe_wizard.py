@@ -63,7 +63,7 @@ def prompt(name: str, default: Any = NOT_SET, expected_type: type = str) -> Any:
     s += ": "
 
     while True:
-        raw = input(s)
+        raw = input(s).strip()
         if not raw:
             if default is NOT_SET:
                 return expected_type()
