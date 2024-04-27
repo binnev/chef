@@ -1,3 +1,9 @@
+## 0.9.0 (2024-04-27)
+
+### Feat
+
+- **pipx**: added project.scripts entry so that users can install via pipx
+
 ## 0.8.2 (2024-04-27)
 
 ### Fix
