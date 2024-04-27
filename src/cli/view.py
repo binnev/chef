@@ -41,10 +41,9 @@ def view_list():
     plan = api.Plan.current()
     ingredients = plan.shopping_list()
     echo("Current shopping list:")
-    width = max(map(len, ingredients), default=0)
     for ing_name in sorted(ingredients):
         amounts = ingredients[ing_name]
-        echo(_format_ingredient_for_list(ing_name, amounts, width))
+        echo(_format_ingredient_for_list(ing_name, amounts))
 
 
 @app.command(name="recipe")
@@ -59,9 +58,9 @@ def view_recipe():
 def _format_ingredient_for_list(
     ing_name: str,
     amounts: MergedIngredient,
-    width: int = 0,
+    max_width: int = 80,
 ) -> str:
-    result = f"{ing_name}:".ljust(width)
+    right = ""
     unique_recipes = len(set(amounts.amountless))
     match [unique_recipes, amounts.unitless, len(amounts.units)]:
         case [0, 0, 0]:
@@ -75,27 +74,33 @@ def _format_ingredient_for_list(
                 if (count := len(amounts.amountless)) == 1
                 else f"{amounts.amountless[0]} (x{count})"
             )
-            result += f" enough for {recipe_strings}"
+            right = f"enough for {recipe_strings}"
 
         # just the unitless amount
         case [0, unitless, 0]:
-            result += f" {unitless}"
+            right = str(unitless)
 
         # only 1 unit e.g. {"kg": 2.5}
         case [0, 0, 1]:
             unit, amount = next(iter(amounts.units.items()))
-            result += f" {amount} {unit}"
+            right = f"{amount} {unit}"
 
         # ========================== multi line cases ==========================
         case _:
             if amounts.amountless:
-                result += f"\n\t{_format_amountless(amounts.amountless)}"
+                right += f"\n\t{_format_amountless(amounts.amountless)}"
             if amounts.unitless:
-                result += f"\n\t{amounts.unitless}"
+                right += f"\n\t{amounts.unitless}"
             for unit, amount in amounts.units.items():
-                result += f"\n\t{amount} {unit}"
+                right += f"\n\t{amount} {unit}"
 
-    return result
+    if "\n" in right:
+        return f"{ing_name}:{right}"
+    result = f"{ing_name}: {right}"
+    if len(result) > max_width:
+        return f"{ing_name}:\n\t{right}"
+    else:
+        return result
 
 
 def _format_amountless(names: list[str]) -> str:

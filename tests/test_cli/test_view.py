@@ -6,7 +6,7 @@ from freezegun import freeze_time
 from typer.testing import CliRunner
 
 from src.api import Plan, Recipe
-from src.api.shopping_list import MergedIngredient
+from src.api.shopping_list import MergedIngredient, ShoppingList
 from src.cli import app
 from src.cli.view import _format_ingredient_for_list
 
@@ -88,10 +88,68 @@ def test_view_list__empty(
     an empty plan.
     """
     mock_current.return_value = Plan()
-    mock_shopping_list.return_value = []
+    mock_shopping_list.return_value = ShoppingList()
     runner = CliRunner()
     result = runner.invoke(app, "view list".split())
     assert result.exit_code == 0
+
+
+LONG = (
+    "longgggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg"
+)
+EXPECTED = f"""Current shopping list:
+multiple:
+    enough for:
+        foo
+        bar
+    69
+single: 420 kg
+very {LONG} amountless:
+    enough for foo
+very {LONG} multiple:
+    enough for:
+        foo
+        bar
+    3
+    666 g
+    2 l
+very {LONG} unitless:
+    3
+very {LONG} units:
+    69 kg
+"""
+
+
+@patch("src.api.plan.Plan.shopping_list")
+@patch("src.cli.view.api.Plan.current")
+def test_view_list__non_empty(
+    mock_current,
+    mock_shopping_list,
+    recipe_library_initialised,
+):
+    """
+    This tests a bug where the formatting (which used `max`) would break for
+    an empty plan.
+    """
+    mock_current.return_value = Plan()
+    mock_shopping_list.return_value = ShoppingList(
+        {
+            f"very {LONG} unitless": MergedIngredient(unitless=3),
+            f"very {LONG} amountless": MergedIngredient(amountless=["foo"]),
+            f"very {LONG} units": MergedIngredient(units={"kg": 69}),
+            f"very {LONG} multiple": MergedIngredient(
+                unitless=3, amountless=["foo", "bar"], units={"g": 666, "l": 2}
+            ),
+            "single": MergedIngredient(units={"kg": 420}),
+            "multiple": MergedIngredient(
+                unitless=69, amountless=["foo", "bar"]
+            ),
+        }
+    )
+    runner = CliRunner()
+    result = runner.invoke(app, "view list".split())
+    assert result.exit_code == 0
+    assert result.stdout == EXPECTED
 
 
 @freeze_time("2024-04-27T12:00:00.00000Z")
