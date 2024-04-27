@@ -21,6 +21,7 @@ dependencies = [
     "pydantic-settings>=2.2",
     "aiofiles>=23.2",
     "inquirer>=3.2",
+    "pyyaml>=6.0.1",
 ]
 
 [project.optional-dependencies]
@@ -48,7 +49,7 @@ chef = "src.cli:app"
 include = ["src*"]
 
 [tool.pytest.ini_options]
-#addopts = "-p no:cacheprovider --cov --cov-fail-under=70 --cov-report term-missing:skip-covered"
+addopts = "-p no:cacheprovider --cov --cov-fail-under=70 --cov-report term-missing:skip-covered"
 testpaths = ["tests"]
 markers = [
     "allow_settings_save: by default, Settings.save is mocked, so we don't create real files when running tests.",
@@ -56,7 +57,6 @@ markers = [
     "allow_path_mkdir",
     "allow_path_touch",
     "allow_path_glob",
-
 ]
 
 [tool.coverage.run]
